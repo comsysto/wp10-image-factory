@@ -1,0 +1,7 @@
+.*
+*.tfstate
+*.tfstate.backup
+*.tfplan
+
+!.github
+!.gitignore
