@@ -2,6 +2,7 @@
 *.tfstate
 *.tfstate.backup
 *.tfplan
+*temp*.txt
 
 !.github
 !.gitignore

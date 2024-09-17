@@ -2,7 +2,7 @@
 # Helper functions
 
 # Extract value by key from file
-extract_value() {
+function extract_value() {
   key=$1
   filename=$2
   grep "^$key" $filename | cut -d '"' -f2
