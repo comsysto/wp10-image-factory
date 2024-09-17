@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "wp10_rg" {
   location = var.resource_group_location
-  name     = "${prefix.id}-wp10_rg"
+  name     = "${prefix.id}-rg"
 }
 
 # Create virtual network
