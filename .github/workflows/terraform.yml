@@ -52,13 +52,13 @@ jobs:
           export RESOURCE_GROUP_NAME=$(extract_value "resource_group_name" config.azurerm.tfbackend)
           export STORAGE_ACCOUNT_NAME=$(extract_value "storage_account_name" config.azurerm.tfbackend)
           export ARM_ACCESS_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv)
+          
+          terraform init --backend-config=config.azurerm.tfbackend
 
           terraform workspace list
           terraform workspace new ${{github.event.inputs.directory}}
           terraform workspace select ${{github.event.inputs.directory}}
           terrafor workspace show
-
-          terraform init --backend-config=config.azurerm.tfbackend
 
       - name: 'Terraform Plan'
         run: |
