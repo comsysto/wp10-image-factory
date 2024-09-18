@@ -36,32 +36,34 @@ jobs:
         with:
           terraform_version: 1.9.5
 
-      - name: 'Configure Azure Credentials - az login'
+      - name: 'Terraform Init'
         env: 
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         run: |
+          export ARM_CLIENT_ID=$AZURE_CLIENT_ID
+          export ARM_CLIENT_SECRET=$AZURE_CLIENT_SECRET
+          export ARM_TENANT_ID=$AZURE_TENANT_ID
+          export ARM_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
+
           az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID 
           az account set --subscription $AZURE_SUBSCRIPTION_ID
 
-      - name: 'Terraform Init'
-        working-directory: ${{github.event.inputs.directory}}
-        run: |
-          [[ $(basename $PWD) == terraform ]] && source scripts/helper.sh
+          if [[ "$(basename $PWD)" == "terraform" ]]; then
+            source scripts/helper.sh
+            export RESOURCE_GROUP_NAME=$(extract_value "resource_group_name" config.azurerm.tfbackend)
+            export STORAGE_ACCOUNT_NAME=$(extract_value "storage_account_name" config.azurerm.tfbackend)
+            export ARM_ACCESS_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv)
+          fi
 
-          export RESOURCE_GROUP_NAME=$(extract_value "resource_group_name" config.azurerm.tfbackend)
-          export STORAGE_ACCOUNT_NAME=$(extract_value "storage_account_name" config.azurerm.tfbackend)
-          export ARM_ACCESS_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv)
-          
           terraform init --backend-config=config.azurerm.tfbackend
 
           terraform workspace list
           terraform workspace select --or-create ${{github.event.inputs.workspace}}
-          terraform workspace show
+          terraform workspace list
 
       - name: 'Terraform Plan'
-        working-directory: ${{github.event.inputs.directory}}
         run: |
           terraform plan -out main.tfplan
