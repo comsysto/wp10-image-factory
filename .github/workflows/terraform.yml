@@ -1,0 +1,60 @@
+name: 'Terraform Azure Deployment'
+
+on:
+  workflow_dispatch:
+    inputs:
+      directory:
+        type: choice
+        description: Terraform directory to apply
+        required: true
+        options: 
+        - terraform-init
+        - terraform
+      workspace:
+        type: choice
+        description: Terraform workspace used for staging
+        required: true
+        options: 
+        - dev
+        - qa
+        - prod
+
+jobs:
+  terraform:
+    name: 'Terraform Apply'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+
+      - name: 'Setup Terraform'
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.5
+
+      - name: 'Configure Azure Credentials - az login'
+        run: |
+          az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+          az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: 'Terraform Init'
+        run: |
+          cd ${{github.event.inputs.directory}}
+          
+          source scripts/helpers.sh
+
+          export RESOURCE_GROUP_NAME=$(extract_value "resource_group_name" config.azurerm.tfbackend)
+          export STORAGE_ACCOUNT_NAME=$(extract_value "storage_account_name" config.azurerm.tfbackend)
+          export ARM_ACCESS_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv)
+
+          terraform workspace list
+          terraform workspace new ${{github.event.inputs.directory}}
+          terraform workspace select ${{github.event.inputs.directory}}
+          terrafor workspace show
+
+          terraform init --backend-config=config.azurerm.tfbackend
+
+      - name: 'Terraform Plan'
+        run: |
+          terraform plan -out main.tfplan

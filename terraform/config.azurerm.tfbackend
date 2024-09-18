@@ -1,0 +1,4 @@
+resource_group_name  = "cariad-wp10-state-rg"
+storage_account_name = "tfstateodd4r"
+container_name       = "tfstate"
+key                  = "imagefactory.tfstate"
