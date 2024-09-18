@@ -13,7 +13,7 @@ on:
         options: 
         - terraform
         - terraform-init
-         default: 'terraform'
+        default: terraform
       workspace:
         type: choice
         description: Terraform workspace used for staging
@@ -22,7 +22,7 @@ on:
         - dev
         - qa
         - prod
-         default: 'dev'
+        default: dev
 
 jobs:
   terraform:
