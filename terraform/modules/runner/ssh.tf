@@ -14,7 +14,7 @@ resource "azapi_resource" "ssh_public_key" {
   parent_id = var.resource_group_id
 }
 
-resource "local_file" "private_key" {
+resource "local_sensitive_file" "private_key" {
   content  = azapi_resource_action.ssh_public_key_gen.output.privateKey
   filename = "private_key.pem"
 }
