@@ -3,6 +3,8 @@
 *.tfstate.backup
 *.tfplan
 *temp*.txt
+*.pem
+ssh.key
 
 !.github
 !.gitignore
