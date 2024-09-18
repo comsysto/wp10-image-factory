@@ -56,9 +56,9 @@ jobs:
           terraform init --backend-config=config.azurerm.tfbackend
 
           terraform workspace list
-          terraform workspace new ${{github.event.inputs.directory}}
-          terraform workspace select ${{github.event.inputs.directory}}
-          terrafor workspace show
+          terraform workspace new ${{github.event.inputs.workspace}}
+          terraform workspace select ${{github.event.inputs.workspace}}
+          terraform workspace show
 
       - name: 'Terraform Plan'
         run: |
