@@ -8,8 +8,8 @@ on:
         description: Terraform directory to apply
         required: true
         options: 
-        - terraform-init
         - terraform
+        - terraform-init
       workspace:
         type: choice
         description: Terraform workspace used for staging
@@ -56,8 +56,7 @@ jobs:
           terraform init --backend-config=config.azurerm.tfbackend
 
           terraform workspace list
-          terraform workspace new ${{github.event.inputs.workspace}}
-          terraform workspace select ${{github.event.inputs.workspace}}
+          terraform workspace select --or-create ${{github.event.inputs.workspace}}
           terraform workspace show
 
       - name: 'Terraform Plan'
