@@ -49,7 +49,7 @@ jobs:
       - name: 'Terraform Init'
         working-directory: ${{github.event.inputs.directory}}
         run: |
-           [[ "$PWD" == terraform ]] && source scripts/helper.sh
+          [[ "$PWD" == terraform ]] && source scripts/helper.sh
 
           export RESOURCE_GROUP_NAME=$(extract_value "resource_group_name" config.azurerm.tfbackend)
           export STORAGE_ACCOUNT_NAME=$(extract_value "storage_account_name" config.azurerm.tfbackend)
