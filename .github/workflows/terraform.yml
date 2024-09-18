@@ -23,6 +23,9 @@ jobs:
   terraform:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{github.event.inputs.directory}}
 
     steps:
       - name: 'Checkout Repository'
