@@ -11,7 +11,11 @@ jobs:
   packer-build:
     runs-on: ubuntu-latest
 
-    env:  
+    env:
+
+      AZ_CLI_VERSION: 2.64.0
+      PACKER_VERSION: 1.9.4
+
       AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
       AZURE_RESOURCE_GROUP:  ${{ vars.AZURE_RESOURCE_GROUP }}
       AZURE_ACG:  ${{ vars.AZURE_ACG }}
@@ -41,7 +45,7 @@ jobs:
       - name: Create Azure Image Definition
         uses: azure/cli@v2
         with:
-          azcliversion: 2.64.0
+          azcliversion: ${{ env.AZ_CLI_VERSION }}
           inlineScript: |
             set +e
             az sig image-definition show \
@@ -65,8 +69,19 @@ jobs:
               echo "Image definition '$IMAGE_NAME' already exists."
             fi
 
-      # - name: Template packer vars file
-      #   uses: cuchi/jinja2-action@v1.2.2
-      #   with:
-      #     template: images/packer/image-factory-vm/values.auto.pkrvars.hcl.j2
-      #     output_file: images/packer/image-factory-vm/values.auto.pkrvars.hcl
+      - name: Template Packer vars file
+        uses: cuchi/jinja2-action@v1.2.2
+        with:
+          template: images/packer/image-factory-vm/values.auto.pkrvars.hcl.j2
+          output_file: images/packer/image-factory-vm/values.auto.pkrvars.hcl
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: ${{ env.PACKER_VERSION }}
+      
+      - name: Packer init
+        run: packer init images/packer/image-factorya-vm
+      
+      - name: Packer validate
+        run: packer validate images/packer/image-factorya-vm
