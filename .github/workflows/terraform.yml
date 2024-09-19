@@ -57,7 +57,7 @@ jobs:
           terraform_version: 1.9.5
 
       - name: 'Terraform Init'
-        if: ${{ github.event.inputs.directory != '' }}
+        if: github.event.inputs.directory != ''
         working-directory: ${{ github.event.inputs.directory }}
         env: 
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
