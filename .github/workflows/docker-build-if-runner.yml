@@ -14,7 +14,6 @@ jobs:
     env:  
       IMAGE_NAME: "image-factory-runner"
       IMAGE_TAG: "${{ github.run_number }}"
-      IMAGE_FOLDER: "images/docker/image-factory-runner"
       REGISTRY: ${{ secrets.REGISTRY }}
 
     steps:
@@ -29,7 +28,7 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build Docker Image
-        run: docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $IMAGE_FOLDER
+        run: docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG images/docker/image-factory-runner
 
       - name: Push Docker image
         run: |
