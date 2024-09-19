@@ -10,7 +10,7 @@ variable "resource_group_location" {
 
 variable "prefix" {
   type        = string
-  default     = "cariad-wp10"
+  default     = "wp10"
   description = "Prefix of the resource name"
 }
 

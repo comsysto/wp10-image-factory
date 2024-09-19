@@ -1,5 +1,5 @@
 locals {
-  prefix = "cariad-wp10-tf-${terraform.workspace}"
+  prefix = "wp10-tf-${terraform.workspace}"
   acr_prefix = replace("${local.prefix}", "-", "")
 }
 
