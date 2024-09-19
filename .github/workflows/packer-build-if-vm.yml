@@ -85,18 +85,10 @@ jobs:
         run: packer init images/packer/image-factory-vm
 
       - name: Packer Build
-        run: packer build -color=false -on-error=abort images/packer/image-factory-vm
-        env:
-          PACKER_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-          PACKER_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          PACKER_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          PACKER_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      # - name: Packer Build
-      #   run: |
-      #     packer build \
-      #       -var "client_id=${{ secrets.AZURE_CLIENT_ID }}" \
-      #       -var "client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" \
-      #       -var "tenant_id=${{ secrets.AZURE_TENANT_ID }}" \
-      #       -var "subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
-      #       images/packer/image-factory-vm
+        run: |
+          packer build \
+            -var "client_id=${{ secrets.AZURE_CLIENT_ID }}" \
+            -var "client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" \
+            -var "tenant_id=${{ secrets.AZURE_TENANT_ID }}" \
+            -var "subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+            images/packer/image-factory-vm
