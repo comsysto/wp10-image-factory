@@ -27,9 +27,9 @@ jobs:
           template: images/packer/image-factory-vm/values.auto.pkrvars.hcl.j2
           output_file: images/packer/image-factory-vm/test.auto.pkrvars.hcl
           variables: |
-            location="test"
-            resource_group="$IMAGE_NAME"
-            gallery_name="test"
+            location=test
+            resource_group=$IMAGE_NAME
+            gallery_name=test
 
       - name: Test jinja action output
         run: cat images/packer/image-factory-vm/test.auto.pkrvars.hcl
