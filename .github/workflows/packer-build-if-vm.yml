@@ -1,0 +1,32 @@
+name: Build Image Factory VM
+
+on:
+  push:
+    paths:
+      - ".github/workflows/packer-build-if-runner-host-vm.yml"
+      - "images/packer/image-factory-vm"
+  workflow_dispatch:
+
+jobs:
+  packer-build:
+    runs-on: ubuntu-latest
+
+    env:  
+      IMAGE_NAME: "image-factory-runner"
+      IMAGE_TAG: "${{ github.run_number }}"
+      IMAGE_FOLDER: "images/docker/image-factory-runner"
+      REGISTRY: ${{ secrets.REGISTRY }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Test jinja action
+        uses: cuchi/jinja2-action@v1.2.2
+        with:
+          template: images/packer/image-factory-vm/values.auto.pkrvars.hcl.j2
+          output_file: images/packer/image-factory-vm/test.auto.pkrvars.hcl
+          variables: |
+            location="test"
+            resource_group="$IMAGE_NAME"
+            gallery_name="test"
