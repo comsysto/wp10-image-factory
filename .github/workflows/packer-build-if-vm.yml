@@ -32,6 +32,7 @@ jobs:
       IMAGE_OFFER: "wp10-image-factory-vm"
       IMAGE_SKU: "v1"
       IMAGE_OS_TYPE: "linux"
+      IMAGE_VERSION: "${{ github.run_number }}"
 
     steps:
       - name: Checkout Repository
@@ -84,4 +85,4 @@ jobs:
         run: packer init images/packer/image-factorya-vm
       
       - name: Packer validate
-        run: packer validate images/packer/image-factorya-vm
+        run: packer validate images/packer/image-factory-vm
