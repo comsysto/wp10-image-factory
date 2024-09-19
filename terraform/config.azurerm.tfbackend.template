@@ -1,0 +1,9 @@
+# az login
+# ACCOUNT_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv)
+#   where $RESOURCE_GROUP_NAME and $STORAGE_ACCOUNT_NAME correspond to ones set below 
+# export ARM_ACCESS_KEY=$ACCOUNT_KEY
+
+resource_group_name  = "example-rg"
+storage_account_name = "examplestorage"
+container_name       = "examplecontainer"
+key                  = "example.tfstate"

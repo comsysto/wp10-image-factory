@@ -1,0 +1,84 @@
+name: 'Terraform Azure Deployment'
+
+on:
+  workflow_dispatch:
+    inputs:
+      directory:
+        type: choice
+        description: Terraform directory to apply
+        required: true
+        options: 
+        - terraform
+        - terraform-init
+        default: terraform
+      workspace:
+        type: choice
+        description: Terraform workspace used for staging
+        required: true
+        options: 
+        - dev2
+        - dev
+        - qa
+        - prod
+        default: dev
+      module:
+        type: choice
+        description: Terraform module to target
+        required: false
+        options: 
+        - acr
+        - runner
+        - network
+        - acg
+        default: ''
+
+
+jobs:
+  terraform:
+    name: 'Terraform Apply'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v4
+
+      - name: 'Setup Terraform'
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.5
+
+      - name: 'Terraform Init'
+        if: ${{ github.event.inputs.directory != '' }}
+        env: 
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        run: |
+          cd  ${{ github.event.inputs.directory }}
+          source scripts/helpers.sh
+
+          az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID 
+          az account set --subscription $AZURE_SUBSCRIPTION_ID
+
+          if [[ "$(basename $PWD)" == "terraform" ]]; then
+            source scripts/helper.sh
+            export RESOURCE_GROUP_NAME=$(extract_value "resource_group_name" config.azurerm.tfbackend)
+            export STORAGE_ACCOUNT_NAME=$(extract_value "storage_account_name" config.azurerm.tfbackend)
+            export ARM_ACCESS_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv)
+            terraform init --backend-config=config.azurerm.tfbackend
+          fi
+
+          terraform workspace list
+          terraform workspace select --or-create ${{github.event.inputs.workspace}}
+          terraform workspace list
+
+      - name: 'Terraform Plan'
+        if: ${{ github.event.inputs.directory != '' }}
+        env: 
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        run: |
+          terraform plan -out main.tfplan
