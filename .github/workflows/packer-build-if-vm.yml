@@ -23,6 +23,12 @@ jobs:
           "tenantId": "${{ secrets.AZURE_TENANT_ID }}"
         }
 
+      IMAGE_NAME: "image-factory-vm"
+      IMAGE_PUBLISHER: "Canonical"
+      IMAGE_OFFER: "0001-com-ubuntu-server-jammy"
+      IMAGE_SKU: "22_04-lts-gen2"
+      IMAGE_OS_TYPE: "linux"
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -36,5 +42,29 @@ jobs:
       - name: Azure Login
         uses: azure/login@v2
         with:
-          creds: "${{ env.AZURE_CREDENTIALS }}"
+          creds: ${{ env.AZURE_CREDENTIALS }}
+
+      - name: Create Image Definition
+        uses: azure/cli@v2
+        with:
+          azcliversion: 2.64.0
+          inlineScript: |
+            image_definition_exists=$(az sig image-definition show \
+              --resource-group "$AZURE_RESOURCE_GROUP" \
+              --gallery-name "$AZURE_ACG" \
+              --gallery-image-definition "$IMAGE_NAME" \
+              --query "name" -o tsv)
+            if [ -z "$image_definition_exists" ]; then
+              echo "Image definition does not exist. Creating it..."
+              az sig image-definition create \
+                --resource-group "$AZURE_RESOURCE_GROUP" \
+                --gallery-name "$AZURE_ACG" \
+                --gallery-image-definition "$IMAGE_NAME" \
+                --publisher "$IMAGE_PUBLISHER" \
+                --offer "$IMAGE_OFFER" \
+                --sku "$IMAGE_SKU" \
+                --os-type "$IMAGE_OS_TYPE"
+            else
+              echo "Image definition '$IMAGE_NAME' already exists."
+            fi
 
