@@ -1,0 +1,41 @@
+name: Build Image Factory Runner
+
+on:
+  push:
+    paths:
+      - ".github/workflows/docker-build-if-runner.yml"
+      - "images/docker/image-factory-runner/**"
+  workflow_dispatch:
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    env:  
+      IMAGE_NAME: "image-factory-runner"
+      IMAGE_TAG: "${{ github.run_number }}"
+      REGISTRY: ${{ secrets.REGISTRY }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build Docker Image
+        run: docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG images/docker/image-factory-runner
+
+      - name: Push Docker image
+        run: |
+          docker push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
+
+      - name: Tag and push Docker image as latest
+        # if: github.ref == 'refs/heads/main' # TODO: uncomment once we are done with development
+        run: |
+          docker tag $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $REGISTRY/$IMAGE_NAME:latest
+          docker push $REGISTRY/$IMAGE_NAME:latest
