@@ -49,13 +49,13 @@ jobs:
 
       - name: 'Terraform Init'
         if: ${{ github.event.inputs.directory != '' }}
+        working-directory: ${{ github.event.inputs.directory }}
         env: 
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         run: |
-          cd  ${{ github.event.inputs.directory }}
           source scripts/helper.sh
 
           az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID 
@@ -75,6 +75,7 @@ jobs:
 
       - name: 'Terraform Plan'
         if: ${{ github.event.inputs.directory != '' }}
+        working-directory: ${{ github.event.inputs.directory }}
         env: 
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
@@ -82,3 +83,15 @@ jobs:
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         run: |
           terraform plan -out main.tfplan
+
+
+      - name: 'Terraform apply'
+        if: ${{ github.event.inputs.directory != '' }}
+        working-directory: ${{ github.event.inputs.directory }}
+        env: 
+          ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        run: |
+          terraform apply main.tfplan --auto-approve
