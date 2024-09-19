@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - ".github/workflows/packer-build-if-vm.yml"
-      - "images/packer/image-factory-vm"
+      - "images/packer/image-factory-vm/**"
   workflow_dispatch:
 
 jobs:

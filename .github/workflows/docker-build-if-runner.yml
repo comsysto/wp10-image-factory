@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - ".github/workflows/docker-build-if-runner.yml"
-      - "images/docker/image-factory-runner"
+      - "images/docker/image-factory-runner/**"
   workflow_dispatch:
 
 jobs:
