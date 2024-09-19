@@ -44,10 +44,6 @@ jobs:
         with:
           creds: ${{ env.AZURE_CREDENTIALS }}
 
-      This step fails with ERROR: (ResourceNotFound) The Resource 'Microsoft.Compute/galleries/wp10silvijaACG/images/image-factory-vm' under resource group 'wp10-silvija-rg' was not found. For more details please go to https://aka.ms/ARMResourceNotFoundFix
-      This makes my github action fail.
-      How can I make it proceed?
-
       - name: Create Image Definition
         uses: azure/cli@v2
         with:
