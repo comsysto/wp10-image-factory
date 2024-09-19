@@ -1,5 +1,5 @@
 # wp10-image-factory
-CARIAD Frame Contract WP10 Image Factory
+Frame Contract WP10 Image Factory
 
 # Contents
 - `terraform-init` - terraform code for setting up an Azure Storage Account that can be used for saving the terraform state
