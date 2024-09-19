@@ -15,5 +15,7 @@ build {
       "chmod +x /tmp/setup.sh",
       "/tmp/setup.sh"
     ]
+
+    inline_shebang = "/bin/sh -x"
   }
 }
