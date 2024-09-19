@@ -12,7 +12,8 @@ module "runner" {
   resource_group_location = var.resource_group_location
   resource_group_name     = module.network.resource_group.name
   resource_group_id       = module.network.resource_group.id
-  subnet_id               = module.network.azurerm_subnet.id
+  public_subnet_id        = module.network.public_subnet.id
+  private_subnet_id       = module.network.private_subnet.id
 }
 
 
@@ -23,7 +24,7 @@ module "acr" {
   resource_group_location = var.resource_group_location
   resource_group_name     = module.network.resource_group.name
   virtual_network         = module.network.azurerm_virtual_network
-  subnet_id               = module.network.azurerm_subnet.id
+  subnet_id               = module.network.private_subnet.id
 }
 
 module "acg" {
@@ -32,6 +33,6 @@ module "acg" {
   prefix                  = local.prefix
   resource_group_location = var.resource_group_location
   resource_group_name     = module.network.resource_group.name
-  subnet_id               = module.network.azurerm_subnet.id
+  subnet_id               = module.network.private_subnet.id
   virtual_network         = module.network.azurerm_virtual_network
 }

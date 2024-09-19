@@ -4,6 +4,10 @@ output "resource_group" {
 output "azurerm_virtual_network" {
   value = azurerm_virtual_network.wp10_vnet
 }
-output "azurerm_subnet" {
-  value = azurerm_subnet.wp10_subnet
+output "public_subnet" {
+  value = azurerm_subnet.wp10_public_subnet
+}
+
+output "private_subnet" {
+  value = azurerm_subnet.wp10_private_subnet
 }

@@ -18,7 +18,12 @@ variable "resource_group_id" {
   description = "Id of the resource group."
 }
 
-variable "subnet_id" {
+variable "public_subnet_id" {
+  type        = string
+  description = "Id of the subnet."
+}
+
+variable "private_subnet_id" {
   type        = string
   description = "Id of the subnet."
 }

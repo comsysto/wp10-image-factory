@@ -1,7 +1,7 @@
-output "resource_group_name" {
-  value = module.network
+output "network_name" {
+  value = module.network.resource_group.name
 }
 
-output "key_data" {
-  value = module.runner.key_data
-}
+output "runner_data" {
+  value = module.runner
+} 
