@@ -15,6 +15,7 @@ jobs:
       IMAGE_NAME: "image-factory-runner"
       IMAGE_TAG: "${{ github.run_number }}"
       IMAGE_FOLDER: "images/docker/image-factory-runner"
+      REGISTRY: ${{ secrets.REGISTRY }}
 
     steps:
       - name: Checkout Repository
