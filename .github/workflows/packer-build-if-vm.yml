@@ -53,7 +53,7 @@ jobs:
               --resource-group "$AZURE_RESOURCE_GROUP" \
               --gallery-name "$AZURE_ACG" \
               --gallery-image-definition "$IMAGE_NAME" \
-              --query "name" -o tsv)
+              --query "name" -o tsv 2>/dev/null)
             if [ -z "$image_definition_exists" ]; then
               echo "Image definition does not exist. Creating it..."
               az sig image-definition create \
