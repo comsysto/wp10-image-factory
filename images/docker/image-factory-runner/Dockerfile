@@ -12,6 +12,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \
+    apt-transport-https \
     buildah \
     ca-certificates \
     curl \
@@ -19,6 +20,7 @@ RUN apt-get update -y && \
     gnupg \
     jq \
     libcap2-bin \
+    lsb-release \
     podman \
     slirp4netns \
     software-properties-common \
@@ -71,6 +73,12 @@ RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && \
 
 # Install Azure CLI
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
+# Install Trivy
+RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add - && \
+    echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | tee -a /etc/apt/sources.list.d/trivy.list && \
+    apt-get update && \
+    apt-get install trivy
 
 # Set runner user
 USER ${USER_NAME}
