@@ -2,21 +2,31 @@ name: _Test Workflow
 
 on:
   workflow_dispatch:
-    inputs:
-      runsOn:
-        description: 'Runs-On: Runner'
-        required: true
-        default: 'self-hosted'
-        type: string
-      command:
-        description: 'run: Command'
-        required: true
-        default: 'echo "test"'
-        type: string
 
 jobs:
   build:
-    runs-on: ${{ inputs.runsOn }}
+    runs-on: ubuntu-latest
     steps:
       - name: Run Command
-        run: ${{ inputs.command }}
+        run: echo "Test"
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       runsOn:
+#         description: 'Runs-On: Runner'
+#         required: true
+#         default: 'self-hosted'
+#         type: string
+#       command:
+#         description: 'run: Command'
+#         required: true
+#         default: 'echo "test"'
+#         type: string
+
+# jobs:
+#   build:
+#     runs-on: ${{ inputs.runsOn }}
+#     steps:
+#       - name: Run Command
+#         run: ${{ inputs.command }}
