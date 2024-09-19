@@ -30,3 +30,6 @@ jobs:
             location="test"
             resource_group="$IMAGE_NAME"
             gallery_name="test"
+
+      - name: Test jinja action output
+        run: cat images/packer/image-factory-vm/test.auto.pkrvars.hcl
