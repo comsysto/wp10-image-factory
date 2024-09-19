@@ -82,7 +82,7 @@ jobs:
           version: ${{ env.PACKER_VERSION }}
       
       - name: Packer init
-        run: packer init images/packer/image-factorya-vm
+        run: packer init images/packer/image-factory-vm
       
       - name: Packer validate
         run: packer validate images/packer/image-factory-vm
