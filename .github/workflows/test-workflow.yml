@@ -4,11 +4,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-if-runner:
     runs-on: ubuntu-latest
+
+    # env:
+
     steps:
-      - name: Run Command
-        run: echo "Test"
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: docker build -t image-factory-runner images/docker/image-factory-runner
 
 # on:
 #   workflow_dispatch:
