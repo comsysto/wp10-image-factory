@@ -25,8 +25,8 @@ on:
         description: Terraform workspace used for staging
         required: true
         options: 
-        - dev2
         - dev
+        - dev2
         - qa
         - prod
         default: dev
@@ -108,7 +108,9 @@ jobs:
           terraform apply -auto-approve main.tfplan 
 
       - name: 'Terraform destroy'
-        if: ${{ github.event.inputs.directory != '' }} && ${{ github.event.inputs.action == 'destroy' }}
+        if: |
+          github.event.inputs.action == destroy &&
+          github.event.inputs.directory != ''
         working-directory: ${{ github.event.inputs.directory }}
         env: 
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -116,4 +118,4 @@ jobs:
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         run: |
-          terraform destroy -auto-approve
+          terraform destroy -target=module.${{ github.event.inputs.module }} -auto-approve
