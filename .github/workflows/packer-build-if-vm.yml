@@ -24,7 +24,7 @@ jobs:
         uses: cuchi/jinja2-action@v1.2.2
         with:
           template: images/packer/image-factory-vm/values.auto.pkrvars.hcl.j2
-          output_file: images/packer/image-factory-vm/test.auto.pkrvars.hcl
+          output_file: images/packer/image-factory-vm/values.auto.pkrvars.hcl
 
       - name: Test jinja action output
         run: cat images/packer/image-factory-vm/test.auto.pkrvars.hcl
