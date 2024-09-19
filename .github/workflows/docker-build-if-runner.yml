@@ -1,11 +1,11 @@
-name: Docker Build Image Factory Runner
+name: Build Image Factory Runner
 
 on:
   workflow_dispatch:
   push:
 
 jobs:
-  build-image-factory-runner:
+  docker-build:
     runs-on: ubuntu-latest
 
     env:  
