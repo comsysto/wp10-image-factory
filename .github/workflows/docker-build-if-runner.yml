@@ -28,12 +28,6 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      # - name: Log in to Docker Hub
-      #   uses: docker/login-action@v2
-      #   with:
-      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
-      #     password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
       - name: Build Docker Image
         run: docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $IMAGE_FOLDER
 
@@ -42,7 +36,7 @@ jobs:
           docker push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
 
       - name: Tag and push Docker image as latest
-        # if: github.ref == 'refs/heads/main'
+        # if: github.ref == 'refs/heads/main' # TODO: uncomment once we are done with development
         run: |
           docker tag $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $REGISTRY/$IMAGE_NAME:latest
           docker push $REGISTRY/$IMAGE_NAME:latest
