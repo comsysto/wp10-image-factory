@@ -30,4 +30,4 @@ source "azure-arm" "vm" {
   }
 }
 
-# az sig image-definition create --resource-group "cariad-wp10-rg" --gallery-name "cariadImageFactoryGallery" --gallery-image-definition "test-ubuntu-22.04" --publisher "Canonical" --offer "0001-com-ubuntu-server-jammy" --sku "22_04-lts-gen2" --os-type linux
+# az sig image-definition create --resource-group "wp10-silvija-rg" --gallery-name "wp10silvijaACG" --gallery-image-definition "test-ubuntu-22.04" --publisher "Canonical" --offer "0001-com-ubuntu-server-jammy" --sku "22_04-lts-gen2" --os-type linux
