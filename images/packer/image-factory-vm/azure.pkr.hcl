@@ -5,7 +5,7 @@ source "azure-arm" "vm" {
   tenant_id       = var.tenant_id
   location        = var.location
 
-  managed_image_name                = var.gallery_image_name
+  managed_image_name                = "${var.gallery_image_name}-${formatdate("DD-MMM-YYYY-hh-mm-ss", timestamp())}"
   managed_image_resource_group_name = var.resource_group
 
   communicator    = "ssh"
