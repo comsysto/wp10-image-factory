@@ -3,7 +3,7 @@ name: Build Image Factory VM
 on:
   push:
     paths:
-      - "".github/workflows/packer-build-if-vm.yml"
+      - ".github/workflows/packer-build-if-vm.yml"
       - "images/packer/image-factory-vm"
   workflow_dispatch:
 
