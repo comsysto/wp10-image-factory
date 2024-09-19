@@ -81,8 +81,14 @@ jobs:
         with:
           version: ${{ env.PACKER_VERSION }}
       
-      - name: Packer init
+      - name: Packer Init
         run: packer init images/packer/image-factory-vm
       
-      - name: Packer validate
-        run: packer validate images/packer/image-factory-vm
+      - name: Packer Build
+        run: |
+          packer build \
+            -var "${{ secrets.AZURE_CLIENT_ID }}" \
+            -var 'client_secret=${{ secrets.AZURE_CLIENT_SECRET }}' \
+            -var 'tenant_id=${{ secrets.AZURE_TENANT_ID }}' \
+            -var 'subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' \
+            images/packer/image-factory-vm

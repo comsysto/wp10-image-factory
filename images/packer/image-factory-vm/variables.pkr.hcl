@@ -25,3 +25,7 @@ variable "resource_group" {
 variable "gallery_name" {
   type = string
 }
+
+variable "gallery_image_version" {
+  type = string
+}

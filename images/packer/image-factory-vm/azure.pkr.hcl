@@ -23,11 +23,9 @@ source "azure-arm" "vm" {
     resource_group = var.resource_group
     gallery_name   = var.gallery_name
     image_name     = "test-ubuntu-22.04"
-    image_version  = "1.0.0"
+    image_version  = var.gallery_image_version
     target_region {
       name = var.location
     }
   }
 }
-
-# az sig image-definition create --resource-group "wp10-silvija-rg" --gallery-name "wp10silvijaACG" --gallery-image-definition "test-ubuntu-22.04" --publisher "Canonical" --offer "0001-com-ubuntu-server-jammy" --sku "22_04-lts-gen2" --os-type linux
