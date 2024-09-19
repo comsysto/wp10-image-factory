@@ -40,3 +40,4 @@ jobs:
       - name: Push Docker image
         run: |
           docker push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
+          docker push $REGISTRY/$IMAGE_NAME:latest
