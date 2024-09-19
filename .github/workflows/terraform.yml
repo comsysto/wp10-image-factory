@@ -83,7 +83,7 @@ jobs:
           terraform workspace list
 
       - name: 'Terraform Plan'
-        if: ${{ github.event.inputs.directory != '' }}
+        if: github.event.inputs.directory != ''
         working-directory: ${{ github.event.inputs.directory }}
         env: 
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
@@ -96,8 +96,8 @@ jobs:
 
       - name: 'Terraform apply'
         if: |
-          ${{ github.event.inputs.action == 'apply' }} &&
-          ${{ github.event.inputs.directory != '' }}
+          github.event.inputs.action == 'apply' &&
+          github.event.inputs.directory != ''
         working-directory: ${{ github.event.inputs.directory }}
         env: 
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
