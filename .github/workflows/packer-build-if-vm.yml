@@ -8,11 +8,11 @@ on:
   workflow_dispatch:
 
 jobs:
+
   packer-build:
     runs-on: ubuntu-latest
 
     env:
-
       AZ_CLI_VERSION: 2.64.0
       PACKER_VERSION: 1.9.4
 
