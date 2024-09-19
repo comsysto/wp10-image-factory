@@ -24,9 +24,9 @@ jobs:
         }
 
       IMAGE_NAME: "image-factory-vm"
-      IMAGE_PUBLISHER: "Canonical"
-      IMAGE_OFFER: "0001-com-ubuntu-server-jammy"
-      IMAGE_SKU: "22_04-lts-gen2"
+      IMAGE_PUBLISHER: "wp10-image-factory"
+      IMAGE_OFFER: "wp10-image-factory-vm"
+      IMAGE_SKU: "v1"
       IMAGE_OS_TYPE: "linux"
 
     steps:
