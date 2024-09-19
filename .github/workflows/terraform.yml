@@ -1,9 +1,6 @@
 name: 'Terraform Azure Deployment'
 
 on:
-  push:
-    branches:
-      - feature/azure-compute-gallery
   workflow_dispatch:
     inputs:
       directory:
@@ -24,14 +21,22 @@ on:
         - qa
         - prod
         default: dev
+      module:
+        type: choice
+        description: Terraform module to target
+        required: false
+        options: 
+        - acr
+        - runner
+        - network
+        - acg
+        default: ''
+
 
 jobs:
   terraform:
     name: 'Terraform Apply'
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{github.event.inputs.directory}}
 
     steps:
       - name: 'Checkout Repository'
@@ -43,16 +48,15 @@ jobs:
           terraform_version: 1.9.5
 
       - name: 'Terraform Init'
+        if: ${{ github.event.inputs.directory != '' }}
         env: 
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         run: |
-          export ARM_CLIENT_ID=$AZURE_CLIENT_ID
-          export ARM_CLIENT_SECRET=$AZURE_CLIENT_SECRET
-          export ARM_TENANT_ID=$AZURE_TENANT_ID
-          export ARM_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
+          cd  ${{ github.event.inputs.directory }}
+          source scripts/helpers.sh
 
           az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID 
           az account set --subscription $AZURE_SUBSCRIPTION_ID
@@ -62,15 +66,15 @@ jobs:
             export RESOURCE_GROUP_NAME=$(extract_value "resource_group_name" config.azurerm.tfbackend)
             export STORAGE_ACCOUNT_NAME=$(extract_value "storage_account_name" config.azurerm.tfbackend)
             export ARM_ACCESS_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv)
+            terraform init --backend-config=config.azurerm.tfbackend
           fi
-
-          terraform init --backend-config=config.azurerm.tfbackend
 
           terraform workspace list
           terraform workspace select --or-create ${{github.event.inputs.workspace}}
           terraform workspace list
 
       - name: 'Terraform Plan'
+        if: ${{ github.event.inputs.directory != '' }}
         env: 
           ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
