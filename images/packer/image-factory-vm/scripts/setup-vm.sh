@@ -2,6 +2,9 @@
 
 set -e
 
+# Set the DEBIAN_FRONTEND to noninteractive
+export DEBIAN_FRONTEND=noninteractive
+
 # Update and upgrade the system
 apt-get update
 apt-get upgrade -y
