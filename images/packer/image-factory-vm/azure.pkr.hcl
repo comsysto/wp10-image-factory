@@ -5,7 +5,7 @@ source "azure-arm" "vm" {
   tenant_id       = var.tenant_id
   location        = var.location
 
-  managed_image_name                = "test-ubuntu-22.04-${formatdate("DD-MMM-YYYY-hh-mm-ss", timestamp())}"
+  managed_image_name                = var.gallery_image_name
   managed_image_resource_group_name = var.resource_group
 
   communicator    = "ssh"
@@ -22,7 +22,7 @@ source "azure-arm" "vm" {
     subscription   = var.subscription_id
     resource_group = var.resource_group
     gallery_name   = var.gallery_name
-    image_name     = "test-ubuntu-22.04"
+    image_name     = var.gallery_image_name
     image_version  = var.gallery_image_version
     target_region {
       name = var.location

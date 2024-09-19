@@ -26,6 +26,10 @@ variable "gallery_name" {
   type = string
 }
 
+variable "gallery_image_name" {
+  type = string
+}
+
 variable "gallery_image_version" {
   type = string
 }
