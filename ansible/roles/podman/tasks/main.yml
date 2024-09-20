@@ -27,7 +27,7 @@
 - name: Pull runner image
   containers.podman.podman_image:
     name: "{{ runner_image_name }}"
-    tag: latest
+    tag: 22
   become: yes
 
 - name: Create the container without starting it
