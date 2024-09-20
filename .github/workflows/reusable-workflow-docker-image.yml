@@ -9,6 +9,9 @@ on:
       docker-dir:
         required: true
         type: string
+      platform:
+        required: true
+        type: string
 
 jobs:
   docker-build:
@@ -32,14 +35,14 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Set up Docker Buildx
-        with:
-          platform: linux/amd64,linux/arm64
         uses: docker/setup-buildx-action@v3
 
       - name: Build Docker Image
+        with:
+          PLATFORM: ${{ input.platform }}
         run: |
           echo "Building image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          docker build --platform linux/amd64 -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
+          docker build --platform $PLATFORM -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
 
       - name: Push Docker image
         run: |
