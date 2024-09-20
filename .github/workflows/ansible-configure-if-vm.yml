@@ -42,7 +42,7 @@ jobs:
           output_file: ansible/inventory.ini
 
       - name: Setup Ansible
-        run: alex-oleshkevich/setup-ansible@VERSION
+        run: alex-oleshkevich/setup-ansible@v1.0.1
         with:
           version: "${{ env.ANSIBLE_VERSION }}"
 
