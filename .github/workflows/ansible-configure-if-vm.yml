@@ -58,4 +58,5 @@ jobs:
       - name: Configure VM with Ansible
         run: |
           cd ansible
+          chmod 600 ansible_ssh_key
           ansible-playbook configure-image-factory-vm.yml
