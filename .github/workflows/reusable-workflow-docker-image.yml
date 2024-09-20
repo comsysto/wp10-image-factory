@@ -39,7 +39,7 @@ jobs:
       - name: Build Docker Image
         run: |
           echo "Building image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          docker buildx build -t --platform linux/amd64 $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
+          docker build --platform linux/amd64 -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
 
       - name: Push Docker image
         run: |
