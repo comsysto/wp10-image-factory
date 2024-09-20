@@ -41,11 +41,11 @@
     state: created 
   become: yes
 
-# TODO: move this to template
 - name: Generate systemd unit file for runner container
   containers.podman.podman_generate_systemd:
     name: "{{ runner_image_name }}"
     dest: /usr/lib/systemd/system
+    new: true
     restart_policy: always
   become: yes
 
