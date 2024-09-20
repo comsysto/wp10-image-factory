@@ -22,6 +22,7 @@ jobs:
       IMAGE_TAG: "${{ github.run_number }}"
       REGISTRY: ${{ secrets.REGISTRY }}
       DOCKER_DIR: ${{ inputs.docker-dir }}
+      PLATFORM: ${{ inputs.platform }}
 
     steps:
       - name: Checkout Repository
@@ -42,7 +43,7 @@ jobs:
           platform: ${{ inputs.platform }}
         run: |
           echo "Building image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          docker build --platform $platform -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
+          docker build --platform linux/$platform -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
 
       - name: Push Docker image
         run: |
