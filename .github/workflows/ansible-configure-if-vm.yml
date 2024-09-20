@@ -54,18 +54,6 @@ jobs:
       #     ssh-add ansible_ssh_key
       #     ssh-add -l
       #     ssh -i ansible_ssh_key -vvv -o ForwardAgent=yes -o ProxyJump=azureadmin@13.81.1.208 -o StrictHostKeyChecking=no azureadmin@10.0.2.6 'hostname'
-        
-
-      - name: Configure VM with ansible
-        run: |
-          cd ansible
-          ssh -V
-          eval "$(ssh-agent -s)"
-          chmod 600 ansible_ssh_key
-          ssh-add ansible_ssh_key
-          ssh-add -l
-          ssh -i ansible_ssh_key -vvv -o ForwardAgent=yes -o ProxyJump=azureadmin@13.81.1.208 -o StrictHostKeyChecking=no azureadmin@10.0.2.6 'hostname'
-        
 
       - name: Template Ansible vars file
         uses: cuchi/jinja2-action@v1.2.2
