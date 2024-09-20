@@ -21,7 +21,7 @@
   containers.podman.podman_login:
     username: "{{ azure_container_registry_username }}"
     password: "{{ azure_container_registry_password }}"
-    authfile: /etc/containers/auth.json
+    # authfile: /etc/containers/auth.json
   become: true
 
 - name: Pull runner image
