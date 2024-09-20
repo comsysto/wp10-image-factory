@@ -10,5 +10,5 @@ jobs:
     with:
       image-name: marko-test
       docker-dir: user
-      platform: arm64
+      platform: arm65
     secrets: inherit
