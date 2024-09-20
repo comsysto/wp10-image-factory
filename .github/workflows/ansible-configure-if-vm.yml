@@ -42,6 +42,9 @@ jobs:
         run: |
           cd ansible
           ssh -V
+          mkdir -p ~/.ssh
+          ssh-keyscan -H 13.81.1.208 >> ~/.ssh/known_hosts
+          ssh-keyscan -H 10.0.2.6 >> ~/.ssh/known_hosts
           eval "$(ssh-agent -s)"
           chmod 600 ansible_ssh_key
           ssh-add ansible_ssh_key
