@@ -63,6 +63,7 @@ jobs:
           eval "$(ssh-agent -s)"
           chmod 600 ansible_ssh_key
           ssh-add ansible_ssh_key
+          cat inventory.ini
 
       - name: Configure VM with Ansible
         run: |
