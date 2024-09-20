@@ -1,0 +1,50 @@
+name: Configure Image Factory VM
+
+on:
+  push:
+    paths:
+      - ".github/workflows/ansible-configure-if-vm.yml"
+      - "ansible/**"
+  workflow_dispatch:
+
+jobs:
+
+  configure-vm:
+    runs-on: ubuntu-latest
+
+    env:
+      AZURE_IF_RUNNER_IP: ${{ secrets.AZURE_IF_RUNNER_IP }}
+      REGISTRY: ${{ secrets.REGISTRY }}
+      ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+
+      GH_PAT_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+      GH_OWNER: ${{ vars.GH_OWNER }}
+      GH_REPO: ${{ vars.GH_REPO }}
+      ACR_RUNNER_IMAGE_NAME: ${{ vars.ACR_RUNNER_IMAGE_NAME }}
+
+      ANSIBLE_VERSION: 2.17.4
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Template Ansible vars file
+        uses: cuchi/jinja2-action@v1.2.2
+        with:
+          template: ansible/templates/group_vars_all.yml.j2
+          output_file: ansible/group_vars/all.yml
+
+      - name: Template Ansible inventory
+          uses: cuchi/jinja2-action@v1.2.2
+          with:
+            template: ansible/templates/inventory.ini.j2
+            output_file: ansible/inventory.ini
+
+      - name: Setup Ansible
+        run: alex-oleshkevich/setup-ansible@VERSION
+        with:
+          version: ${{ env.ANSIBLE_VERSION }}
+
+      - name: Print Ansible Version
+        run: ansible-playbook --version
