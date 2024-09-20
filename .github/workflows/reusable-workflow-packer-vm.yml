@@ -50,7 +50,7 @@ jobs:
             az sig image-definition show \
               --resource-group "$AZURE_RESOURCE_GROUP" \
               --gallery-name "$AZURE_ACG" \
-              --gallery-image-definition "{{ input.image-name }}" \
+              --gallery-image-definition "{{ inputs.image-name }}" \
               --query "name" -o tsv
             az_exit_code=$?
             set -e
@@ -59,13 +59,13 @@ jobs:
               az sig image-definition create \
                 --resource-group "$AZURE_RESOURCE_GROUP" \
                 --gallery-name "$AZURE_ACG" \
-                --gallery-image-definition "{{ input.image-name }} \
+                --gallery-image-definition "{{ inputs.image-name }} \
                 --publisher "$IMAGE_PUBLISHER" \
                 --offer "$IMAGE_OFFER" \
                 --sku "$IMAGE_SKU" \
                 --os-type "$IMAGE_OS_TYPE"
             else
-              echo "Image definition '{{ input.image-name }}' already exists."
+              echo "Image definition '{{ inputs.image-name }}' already exists."
             fi
 
       - name: Template Packer vars file

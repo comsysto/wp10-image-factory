@@ -1,0 +1,43 @@
+name: Reusable workflow - build docker image
+
+on:
+  workflow_call:
+    inputss:
+      image-name:
+        required: true
+        type: string
+      dockerfile:
+        required: true
+        type: string
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+
+    env:  
+      IMAGE_TAG: "${{ github.run_number }}"
+      REGISTRY: ${{ secrets.REGISTRY }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build Docker Image
+        run: docker build -t $REGISTRY/{{ inputs.image-name }}:$IMAGE_TAG {{ inputs.docker-file }}
+
+      - name: Push Docker image
+        run: |
+          docker push $REGISTRY/{{ inputs.image-name }}:$IMAGE_TAG
+
+      - name: Tag and push Docker image as latest
+        # if: github.ref == 'refs/heads/main' # TODO: uncomment once we are done with development
+        run: |
+          docker tag $REGISTRY/{{ inputs.image-name }}:$IMAGE_TAG $REGISTRY/{{ inputs.image-name }}:latest
+          docker push $REGISTRY/{{ inputs.image-name }}:latest
