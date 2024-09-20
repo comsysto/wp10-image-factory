@@ -14,6 +14,14 @@ terraform {
       source  = "hashicorp/random"
       version = "~>3.0"
     }
+    github = {
+      source  = "integrations/github"
+      version = "6.3.0"
+    }
+    external = {
+      source  = "hashicorp/external"
+      version = "2.3.4"
+    }
   }
 
   backend "azurerm" {}
@@ -24,4 +32,10 @@ provider "azurerm" {
 }
 
 provider "azapi" {
+}
+
+provider "github" {
+}
+
+provider "external" {
 }
