@@ -14,7 +14,8 @@ jobs:
   docker-build:
     runs-on: ubuntu-latest
 
-    env:  
+    env:
+      IMAGE_NAME: ${{ inputs.container-name }}
       IMAGE_TAG: "${{ github.run_number }}"
       REGISTRY: ${{ secrets.REGISTRY }}
 
@@ -30,21 +31,14 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build Docker Image
-        with:
-          container-name: ${{ inputs.container-name }}
-          dockerfile: ${{ inputs.cdockerfile }}
-        run: docker build -t $REGISTRY/$container-name:$IMAGE_TAG $dockerfile
+        run: docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $dockerfile
 
       - name: Push Docker image
-        with:
-          container-name: ${{ inputs.container-name }}
         run: |
-          docker push $REGISTRY/$container-name:$IMAGE_TAG
+          docker push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
 
       - name: Tag and push Docker image as latest
         # if: github.ref == 'refs/heads/main' # TODO: uncomment once we are done with development
-        with:
-          container-name: ${{ inputs.container-name }}
         run: |
-          docker tag $REGISTRY/$container-name:$IMAGE_TAG $REGISTRY/$container-name:latest
-          docker push $REGISTRY/$container-name:latest
+          docker tag $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $REGISTRY/$IMAGE_NAME:latest
+          docker push $REGISTRY/$IMAGE_NAME:latest
