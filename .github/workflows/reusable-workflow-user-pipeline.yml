@@ -1,0 +1,10 @@
+name: Reusable workflow - user pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-workflow-passing-data:
+    uses: comsysto/wp10-image-factory/.github/workflows/reusable-workflow.yml@feature/user-workflow
+    with:
+      image-name: marko-test
