@@ -79,4 +79,6 @@ jobs:
           eval "$(ssh-agent -s)"
           chmod 600 ansible_ssh_key
           ssh-add ansible_ssh_key
+          ssh_command="ssh -o StrictHostKeyChecking=no azureadmin@${JUMPHOST_IP} 'ssh -o StrictHostKeyChecking=no azureadmin@${RUNNER_HOST_IP} whoami'"
+          eval $ssh_command
           ansible-playbook -vvv configure-image-factory-vm.yml
