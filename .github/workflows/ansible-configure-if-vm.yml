@@ -60,6 +60,7 @@ jobs:
       - name: Setup Ansible connection
         run: |
           cd ansible
+          eval "$(ssh-agent -s)"
           chmod 600 ansible_ssh_key
           ssh-add ansible_ssh_key
 
