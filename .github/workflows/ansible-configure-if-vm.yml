@@ -44,7 +44,7 @@ jobs:
       - name: Setup Ansible
         run: alex-oleshkevich/setup-ansible@VERSION
         with:
-          version: ${{ env.ANSIBLE_VERSION }}
+          version: "${{ env.ANSIBLE_VERSION }}"
 
       - name: Print Ansible Version
         run: ansible-playbook --version
