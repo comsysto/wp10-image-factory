@@ -42,7 +42,7 @@ jobs:
         run: |
           cd ansible
           chmod 600 ansible_ssh_key
-          mkidr /home/runner/.ssh/
+          mkdir /home/runner/.ssh
           eval "$(ssh-agent -s)"
           cat <<EOF > /home/runner/.ssh/known_hosts
           13.81.1.208 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBcvCPBWhalKprTreWRp2+mwtCB9xpqSdGqXg5FNmEGO
