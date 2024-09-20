@@ -9,5 +9,5 @@ jobs:
     uses: comsysto/wp10-image-factory/.github/workflows/reusable-workflow-docker-image.yml@feature/user-workflow
     with:
       image-name: marko-test
-      dockerfile: ../../user/Dockerfile
+      docker-dir: user
     secrets: inherit

@@ -6,7 +6,7 @@ on:
       image-name:
         required: true
         type: string
-      dockerfile:
+      docker-dir:
         required: true
         type: string
 
@@ -18,7 +18,7 @@ jobs:
       IMAGE_NAME: ${{ inputs.image-name }}
       IMAGE_TAG: "${{ github.run_number }}"
       REGISTRY: ${{ secrets.REGISTRY }}
-      DOCKERFILE: ${{ inputs.dockerfile }}
+      DOCKER_DIR: ${{ inputs.docker-dir }}
 
     steps:
       - name: Checkout Repository
@@ -32,8 +32,7 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build Docker Image
-        run: pwd && ls -laR
-        #docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKERFILE
+        run: docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
 
       - name: Push Docker image
         run: |
