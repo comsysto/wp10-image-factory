@@ -39,10 +39,10 @@ jobs:
 
       - name: Build Docker Image
         with:
-          PLATFORM: ${{ input.platform }}
+          platform: ${{ inputs.platform }}
         run: |
           echo "Building image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          docker build --platform $PLATFORM -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
+          docker build --platform $platform -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
 
       - name: Push Docker image
         run: |
