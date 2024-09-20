@@ -46,7 +46,7 @@ jobs:
           cat ~/.ssh/config
           ssh-add ansible_ssh_key
           ssh-add -l
-          ssh -vvv -o ForwardAgent=yes -o ProxyJump=azureadmin@13.81.1.208 -o StrictHostKeyChecking=no azureadmin@10.0.2.6 'hostname'
+          ssh -i ansible_ssh_key -vvv -o ForwardAgent=yes -o ProxyJump=azureadmin@13.81.1.208 -o StrictHostKeyChecking=no azureadmin@10.0.2.6 'hostname'
 
 
 
