@@ -3,5 +3,9 @@ output "network_name" {
 }
 
 output "runner_data" {
-  value = module.runner
-} 
+  value = (var.local_development == true ? module.runner : null)
+}
+
+output "encrypted_gh_secrets" {
+  value = (var.local_development == true ? module.github_output : null)
+}

@@ -47,3 +47,12 @@ module "firewall" {
   private_subnet_id       = module.network.private_subnet.id
   virtual_network         = module.network.azurerm_virtual_network.name
 }
+
+module "github_output" {
+  source = "./modules/github_output"
+
+  repository     = var.repository
+  ssh_key        = module.runner.private_key
+  jumphost_ip    = module.runner.public_ip_address
+  runner_host_ip = module.runner.private_ip_address
+}

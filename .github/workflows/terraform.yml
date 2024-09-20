@@ -65,6 +65,8 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+          GITHUB_OWNER: ${{ vars.GH_OWNER }}
         run: |
           source scripts/helper.sh
 
@@ -91,6 +93,8 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+          GITHUB_OWNER: ${{ vars.GH_OWNER }}
         run: |
           if [${{ github.event.inputs.module }} == "all"]; then
             terraform plan -out.main.tfplan
@@ -108,6 +112,8 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+          GITHUB_OWNER: ${{ vars.GH_OWNER }}
         run: |
           terraform apply -auto-approve main.tfplan 
 
@@ -121,5 +127,7 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
           ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+          GITHUB_OWNER: ${{ vars.GH_OWNER }}
         run: |
           terraform destroy -target=module.${{ github.event.inputs.module }} -auto-approve
