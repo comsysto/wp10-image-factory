@@ -40,19 +40,30 @@ jobs:
 
       - name: Configure VM with ansible
         run: |
-          cd ansible
-          ssh -V
-          mkdir -p ~/.ssh
-          ssh-keyscan -H 13.81.1.208 >> ~/.ssh/known_hosts
-          ssh-keyscan -H 10.0.2.6 >> ~/.ssh/known_hosts
-          eval "$(ssh-agent -s)"
           chmod 600 ansible_ssh_key
+          mkidr /home/runner/.ssh/
+          eval "$(ssh-agent -s)"
+          cat <<EOF > /home/runner/.ssh/known_hosts
+          13.81.1.208 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBcvCPBWhalKprTreWRp2+mwtCB9xpqSdGqXg5FNmEGO
+          13.81.1.208 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCoJ5mB0Q+kFwqBLISxzrbQP0LiBWzqlRbs7zGNVlwYMkaHn2wcDPNV7BE0h0SizEJ7Md0wDHfHDhVRNL4mHvJCTDeVZGYpEHchMxC/7oWp402xybH70ppON6h/BYAbB8aq8zdXFBLrFkUR9wWhys0ugYxZGXp1kuhLazs2ddZRE4i8em58gzpVgm4UgyKPnmtXJUt35NeiboQjEdzm9AEaQ/xHgT28EdOL4MXGDrxs8DKCIR4y2lO6m5Aregl55TBC8wGMkn5qB+FCrD3UeSDH+rkMNCz6kXT8s5ZMgl1+qzr0ivHKIXEEzR5d8l6il5p3b5tF0VGJp2YwQno/68DGBPHtnW63bvu3Hxisle8RHSFSr0G81AIHz8a2p1+u67EUQH6lTslcGJIztaY6AARKjn/wqTMLSNpwHb60/bE0sGLmz+0U+gSrJcDNpC2rBl6S5poEU9btpN5kCOt7xu/HebxlkgRXUfPTxzwrjNszEFdTABvZKHy9vY2bV/hI+9k=
+          13.81.1.208 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBOckkT18AWgOEz2TRwL4Swmu50JDxcakkZuKp0Hmdh+g7yJw8gIBpQI/lkSCmz3bVWnPxOZvlC01Qpvs7S1LnYs=
+          10.0.2.6 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFotDXiaILW5kLdjSdnoQO3zdrJd4ClYkxbSEYCMVWvS
+          EOF
           ssh-add ansible_ssh_key
           ssh-add -l
           ssh -i ansible_ssh_key -vvv -o ForwardAgent=yes -o ProxyJump=azureadmin@13.81.1.208 -o StrictHostKeyChecking=no azureadmin@10.0.2.6 'hostname'
+        
 
-
-
+      # - name: Configure VM with ansible
+      #   run: |
+      #     cd ansible
+      #     ssh -V
+      #     eval "$(ssh-agent -s)"
+      #     chmod 600 ansible_ssh_key
+      #     ssh-add ansible_ssh_key
+      #     ssh-add -l
+      #     ssh -i ansible_ssh_key -vvv -o ForwardAgent=yes -o ProxyJump=azureadmin@13.81.1.208 -o StrictHostKeyChecking=no azureadmin@10.0.2.6 'hostname'
+        
 
       # - name: Template Ansible vars file
       #   uses: cuchi/jinja2-action@v1.2.2
