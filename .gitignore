@@ -8,6 +8,3 @@ ssh.key
 
 !.github
 !.gitignore
-
-ansible/group_vars/all.yml
-ansible/inventory.ini
