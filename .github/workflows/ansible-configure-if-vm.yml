@@ -40,7 +40,7 @@ jobs:
 
       - run: |
           chmod 600 ansible/ansible_ssh_key
-          ssh -i ansible/ansible_ssh_key azureadmin@13.81.1.208 'echo test'
+          ssh -o StrictHostKeyChecking=no -i ansible/ansible_ssh_key azureadmin@13.81.1.208 'echo test'
 
 #       - name: Template Ansible vars file
 #         uses: cuchi/jinja2-action@v1.2.2
