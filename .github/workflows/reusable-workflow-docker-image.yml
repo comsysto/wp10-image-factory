@@ -11,7 +11,10 @@ on:
         type: string
       platform:
         required: true
-        type: string
+        type: choice
+        options:
+          - amd64
+          - arm64
 
 jobs:
   docker-build:
