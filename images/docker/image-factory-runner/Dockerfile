@@ -37,7 +37,8 @@ RUN mkdir -p ${USER_HOME} && \
 
 # Add podman configuration file(s) 
 ADD files/containers.conf /etc/containers/containers.conf
-RUN chmod 644 /etc/containers/containers.conf
+ADD files/registries.conf /etc/containers/registries.conf
+RUN chmod 644 /etc/containers/containers.conf /etc/containers/registries.conf
 
 # Setup for rootless podman
 RUN usermod --add-subuids 100000-165535 --add-subgids 100000-165535 ${USER_NAME}

@@ -36,6 +36,7 @@
     env:
       GITHUB_OWNER: "{{ github_owner }}"
       GITHUB_REPOSITORY: "{{ github_repository }}"
+      CONTAINER_REGISTRY: "{{ azure_container_registry }}"
     volumes:
       - /.pat:/.pat
     state: created 
