@@ -40,6 +40,7 @@ jobs:
 
       - name: Configure VM with ansible
         run: |
+          cd ansible
           chmod 600 ansible_ssh_key
           mkidr /home/runner/.ssh/
           eval "$(ssh-agent -s)"
