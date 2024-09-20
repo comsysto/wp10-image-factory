@@ -60,3 +60,4 @@ jobs:
           cd ansible
           chmod 600 ansible_ssh_key
           ansible-playbook configure-image-factory-vm.yml
+
