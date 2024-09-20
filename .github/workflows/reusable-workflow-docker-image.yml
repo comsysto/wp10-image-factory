@@ -50,8 +50,17 @@ jobs:
 
       - name: Check image with Trivy
         run: |
-          trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
-          
+          mkdir build-artifacts
+          trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG >> build-artifacts/vuln-scan.txt
+          trivy image --format spdx ubuntu:rolling >> build-artifacts/sbom-spdx.txt
+          trivy image --format cyclonedx ubuntu:rolling >> build-artifacts/sbom-cyclonedx.txt
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-artifacts
+          path: build-artifacts
+
       - name: Tag and push Docker image as latest
         # if: github.ref == 'refs/heads/main' # TODO: uncomment once we are done with development
         run: |
