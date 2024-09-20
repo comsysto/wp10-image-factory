@@ -64,6 +64,6 @@ jobs:
           chmod 600 ansible_ssh_key
           ssh-add ansible_ssh_key
           cat inventory.ini
-          ansible-playbook -vv configure-image-factory-vm.yml
+          ansible-playbook configure-image-factory-vm.yml
 
 # Test comment to trigger build #
