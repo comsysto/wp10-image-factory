@@ -5,6 +5,11 @@ GITHUB_REPOSITORY=$GITHUB_REPOSITORY
 GITHUB_TOKEN=$(cat /.pat/.token)
 GITHUB_RUNNER_NAME="image-factory-runner"
 
+echo "Log in to container registry:"
+podman login "$CONTAINER_REGISTRY" \
+  --username "$CONTAINER_REGISTRY_USERNAME" \
+  --password "$CONTAINER_REGISTRY_PASSWORD"
+
 echo "Getting runner registration token from GitHub..."
 REG_TOKEN=$(curl -sX POST -H "Accept: application/vnd.github.v3+json" -H "Authorization: token ${GITHUB_TOKEN}" https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPOSITORY}/actions/runners/registration-token | jq .token --raw-output)
 
