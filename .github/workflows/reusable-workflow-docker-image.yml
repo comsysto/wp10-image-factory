@@ -3,7 +3,7 @@ name: Reusable workflow - build docker image
 on:
   workflow_call:
     inputs:
-      image-name:
+      container-name:
         required: true
         type: string
       dockerfile:
