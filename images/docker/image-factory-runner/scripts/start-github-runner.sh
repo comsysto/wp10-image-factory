@@ -30,4 +30,6 @@ cd actions-runner
   --replace \
   --disableupdate
 
+# TODO: add remove REG_TOKEN
+
 ./run.sh & wait $!
