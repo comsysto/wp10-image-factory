@@ -61,13 +61,22 @@ jobs:
           pip3 install ansible
           ansible-playbook --version
 
+      # - name: Configure VM with ansible
+      #   run: |
+      #     cd ansible
+      #     eval "$(ssh-agent -s)"
+      #     chmod 600 ansible_ssh_key
+      #     ssh-add ansible_ssh_key
+      #     ssh_command="ssh -o StrictHostKeyChecking=no azureadmin@$JUMPHOST_IP \"ssh -o StrictHostKeyChecking=no azureadmin@$RUNNER_HOST_IP whoami\""
+      #     echo $ssh_command
+      #     eval $ssh_command
+      #     ansible-playbook configure-image-factory-vm.yml
+
       - name: Configure VM with ansible
         run: |
           cd ansible
+          cat inventory.ini
           eval "$(ssh-agent -s)"
           chmod 600 ansible_ssh_key
           ssh-add ansible_ssh_key
-          ssh_command="ssh -o StrictHostKeyChecking=no azureadmin@$JUMPHOST_IP \"ssh -o StrictHostKeyChecking=no azureadmin@$RUNNER_HOST_IP whoami\""
-          echo $ssh_command
-          eval $ssh_command
           ansible-playbook configure-image-factory-vm.yml
