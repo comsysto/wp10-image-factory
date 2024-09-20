@@ -38,8 +38,7 @@
       GITHUB_OWNER: "{{ github_owner }}"
       GITHUB_REPOSITORY: "{{ github_repository }}"
       CONTAINER_REGISTRY: "{{ azure_container_registry }}"
-      CONTAINER_REGISTRY_USERNAME: "{{ azure_container_registry_username }}"
-      CONTAINER_REGISTRY_PASSWORD: "{{ azure_container_registry_password }}"
+      CONTAINER_REGISTRY_AUTH: "{{ (azure_container_registry_username + ':' + azure_container_registry_password) | b64encode }}"
     volumes:
       - /.pat:/.pat
     state: created 
