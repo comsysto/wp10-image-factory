@@ -24,6 +24,7 @@ jobs:
       ACR_RUNNER_IMAGE_NAME: ${{ vars.ACR_RUNNER_IMAGE_NAME }}
 
       ANSIBLE_VERSION: 2.17.4
+      AZURE_VM_SSH_KEY: ${{ secrets.AZURE_VM_SSH_KEY }}
 
     steps:
       - name: Checkout Repository
@@ -40,6 +41,12 @@ jobs:
         with:
           template: ansible/templates/inventory.ini.j2
           output_file: ansible/inventory.ini
+
+      - name: Template Ansible private key file
+        uses: cuchi/jinja2-action@v1.2.2
+        with:
+          template: ansible/templates/ansible_ssh_key.j2
+          output_file: ansible/ansible_ssh_key
 
       - name: Setup Ansible
         run: |
