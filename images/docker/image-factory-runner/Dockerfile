@@ -24,6 +24,7 @@ RUN apt-get update -y && \
     podman \
     slirp4netns \
     software-properties-common \
+    sudo \
     unzip \
     vim \
     wget && \
