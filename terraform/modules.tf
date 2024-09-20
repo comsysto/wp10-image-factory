@@ -36,3 +36,14 @@ module "acg" {
   subnet_id               = module.network.private_subnet.id
   virtual_network         = module.network.azurerm_virtual_network
 }
+
+module "firewall" {
+  source = "./modules/firewall"
+
+  prefix                  = local.prefix
+  resource_group_location = var.resource_group_location
+  resource_group_name     = module.network.resource_group.name
+  public_subnet_id        = module.network.public_subnet.id
+  private_subnet_id       = module.network.private_subnet.id
+  virtual_network         = module.network.azurerm_virtual_network.name
+}
