@@ -2,6 +2,7 @@ name: Reusable workflow - user docker pipeline
 
 on:
   workflow_dispatch:
+  push:
 
 jobs:
   call-workflow:
