@@ -40,7 +40,8 @@ jobs:
 
       - run: |
           chmod 600 ansible/ansible_ssh_key
-          ssh -o StrictHostKeyChecking=no -i -o ForwardAgent=yes ansible/ansible_ssh_key -J azureadmin@13.81.1.208 azureadmin@10.0.2.6 'echo test'
+          ssh -o StrictHostKeyChecking=no -o ForwardAgent=yes -i ansible/ansible_ssh_key -J azureadmin@13.81.1.208 azureadmin@10.0.2.6 'echo test'
+
 
 #       - name: Template Ansible vars file
 #         uses: cuchi/jinja2-action@v1.2.2
