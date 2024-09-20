@@ -47,3 +47,8 @@ jobs:
 
       - name: Print Ansible Version
         run: ansible-playbook --version
+
+      - name: Configure VM with Ansible
+        run: |
+          cd ansible
+          ansible-playbook configure-image-factory-vm.yml
