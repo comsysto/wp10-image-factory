@@ -58,6 +58,6 @@
   ansible.builtin.systemd:
     name: "container-{{ runner_image_name }}"
     daemon_reload: true
-    state: started
+    state: restarted
     enabled: true
   become: yes
