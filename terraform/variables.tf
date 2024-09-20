@@ -18,3 +18,9 @@ variable "local_development" {
   default     = false
   description = "Development purposes only: set to 'true' when running terraform apply locally. Outputs SSH private key to the terraform directory."
 }
+
+variable "runner_image_id" {
+  type        = string
+  default     = "/subscriptions/218f1214-da01-4678-8025-4e14a989e315/resourceGroups/wp10-tf-dev-rg/providers/Microsoft.Compute/galleries/wp10ImageFactoryGallery/images/image-factory-vm/versions/1.0.34"
+  description = "Shared Image Gallery ID of the runner VM image."
+}

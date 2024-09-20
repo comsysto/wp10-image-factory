@@ -14,6 +14,7 @@ module "runner" {
   resource_group_id       = module.network.resource_group.id
   public_subnet_id        = module.network.public_subnet.id
   private_subnet_id       = module.network.private_subnet.id
+  runner_image_id         = var.runner_image_id
 }
 
 
