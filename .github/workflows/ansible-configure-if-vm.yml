@@ -13,7 +13,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      AZURE_IF_RUNNER_IP: ${{ secrets.AZURE_IF_RUNNER_IP }}
+      JUMPHOST_IP: ${{ secrets.JUMPHOST_IP }}
+      RUNNER_HOST_IP: ${{ secrets.RUNNER_HOST_IP }}
+
       REGISTRY: ${{ secrets.REGISTRY_PRIVATE_ENDPOINT }}
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
       ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
@@ -48,17 +50,22 @@ jobs:
           template: ansible/templates/ansible_ssh_key.j2
           output_file: ansible/ansible_ssh_key
 
-      - name: Setup Ansible
+      - name: Install Ansible
         run: |
           pip3 install ansible
 
       - name: Print Ansible Version
         run: ansible-playbook --version
 
-      - name: Configure VM with Ansible
+      - name: Setup Ansible connection
         run: |
           cd ansible
           chmod 600 ansible_ssh_key
+          ssh-add ansible_ssh_key
+
+      - name: Configure VM with Ansible
+        run: |
+          cd ansible
           ansible-playbook configure-image-factory-vm.yml
 
 # Test comment to trigger build #
