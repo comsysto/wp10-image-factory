@@ -1,2 +1,5 @@
-jumphost ansible_host={{ env['JUMPHOST_IP'] }} ansible_user=azureadmin ansible_ssh_common_args='-o StrictHostKeyChecking=no'
-image-factory-vm ansible_host={{ env['RUNNER_HOST_IP'] }} ansible_user=azureadmin ansible_ssh_common_args='-o ProxyJump=azureadmin@{{ env['JUMPHOST_IP'] }} -o StrictHostKeyChecking=no'
+#jumphost ansible_host={{ env['JUMPHOST_IP'] }} ansible_user=azureadmin ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+#image-factory-vm ansible_host={{ env['RUNNER_HOST_IP'] }} ansible_user=azureadmin ansible_ssh_common_args='-o ProxyJump=azureadmin@{{ env['JUMPHOST_IP'] }} -o StrictHostKeyChecking=no'
+
+
+image-factory-vm ansible_host={{ env['RUNNER_HOST_IP'] }} ansible_ssh_common_args='-o ProxyJump=azureadmin@{{ env['JUMPHOST_IP'] }}'
