@@ -15,6 +15,7 @@ jobs:
     env:
       AZURE_IF_RUNNER_IP: ${{ secrets.AZURE_IF_RUNNER_IP }}
       REGISTRY: ${{ secrets.REGISTRY }}
+      # REGISTRY: ${{ secrets.REGISTRY_PRIVATE_ENDPOINT }} # TODO: change above line to this before using
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
       ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
 
