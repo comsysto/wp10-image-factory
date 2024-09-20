@@ -31,13 +31,14 @@ RUN apt-get update -y && \
 
 
 # Create runner user
-RUN mkdir -p ${USER_HOME} && \
+RUN mkdir -p ${USER_HOME}/containers && \
     useradd -r -d ${USER_HOME} -s /sbin/nologin -c "GitHub Actions User" ${USER_NAME} && \ 
     chown ${USER_GROUP}:${USER_NAME} ${USER_HOME}
 
 # Add podman configuration file(s) 
 ADD files/containers.conf /etc/containers/containers.conf
 ADD files/registries.conf /etc/containers/registries.conf
+ADD files/auth.json ${USER_HOME}/containers/auth.json
 RUN chmod 644 /etc/containers/containers.conf /etc/containers/registries.conf
 
 # Setup for rootless podman
