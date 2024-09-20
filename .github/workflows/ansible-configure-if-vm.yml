@@ -41,8 +41,16 @@ jobs:
       - name: Configure VM with ansible
         run: |
           cd ansible
+          chmod 600 ansible_ssh_key
           mkdir -p ~/.ssh
+
           ssh-keyscan -H $JUMPHOST_IP >> ~/.ssh/known_hosts
+          cat ~/.ssh/known_hosts
+
+          
+
+          
+
 
       # - name: Configure VM with ansible
       #   run: |
