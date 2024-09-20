@@ -36,10 +36,10 @@ jobs:
           output_file: ansible/group_vars/all.yml
 
       - name: Template Ansible inventory
-          uses: cuchi/jinja2-action@v1.2.2
-          with:
-            template: ansible/templates/inventory.ini.j2
-            output_file: ansible/inventory.ini
+        uses: cuchi/jinja2-action@v1.2.2
+        with:
+          template: ansible/templates/inventory.ini.j2
+          output_file: ansible/inventory.ini
 
       - name: Setup Ansible
         run: alex-oleshkevich/setup-ansible@VERSION
