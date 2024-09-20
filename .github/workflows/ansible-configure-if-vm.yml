@@ -43,6 +43,7 @@ jobs:
           cd ansible
           eval "$(ssh-agent -s)"
           chmod 600 ansible_ssh_key
+          cat ~/.ssh/config
           ssh-add ansible_ssh_key
           ssh-add -l
           ssh -o ForwardAgent=yes -o ProxyJump=azureadmin@13.81.1.208 -o StrictHostKeyChecking=no azureadmin@10.0.2.6 'hostname'
