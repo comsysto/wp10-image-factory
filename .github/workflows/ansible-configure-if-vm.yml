@@ -41,13 +41,13 @@ jobs:
       - name: Configure VM with ansible
         run: |
           cd ansible
+          eval "$(ssh-agent -s)"
           chmod 600 ansible_ssh_key
-          mkdir -p ~/.ssh
+          ssh-add ansible_ssh_key
+          ssh_command="ssh -o StrictHostKeyChecking=no azureadmin@${JUMPHOST_IP} 'ssh -o StrictHostKeyChecking=no azureadmin@${RUNNER_HOST_IP} whoami'"
+          echo $ssh_command
 
-          ssh-keyscan -H $JUMPHOST_IP >> ~/.ssh/known_hosts
-          cat ~/.ssh/known_hosts
 
-          
 
           
 
