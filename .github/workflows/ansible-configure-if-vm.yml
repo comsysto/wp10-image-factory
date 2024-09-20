@@ -42,9 +42,8 @@ jobs:
           output_file: ansible/inventory.ini
 
       - name: Setup Ansible
-        uses: alex-oleshkevich/setup-ansible@v1.0.1
-        with:
-          version: "${{ env.ANSIBLE_VERSION }}"
+        run: |
+          pip3 install ansible
 
       - name: Print Ansible Version
         run: ansible-playbook --version
