@@ -16,6 +16,7 @@ RUN apt-get update -y && \
     buildah \
     ca-certificates \
     curl \
+    fuse-overlayfs \
     git \
     gnupg \
     jq \
@@ -32,14 +33,16 @@ RUN apt-get update -y && \
 
 
 # Create runner user
-RUN mkdir -p ${USER_HOME}/containers && \
-    useradd -r -d ${USER_HOME} -s /sbin/nologin -c "GitHub Actions User" ${USER_NAME} && \ 
-    chown ${USER_GROUP}:${USER_NAME} ${USER_HOME}
+RUN mkdir -p ${USER_HOME} && \
+    useradd -r -d ${USER_HOME} -s /sbin/nologin -c "GitHub Actions User" ${USER_NAME}
 
-# Add podman configuration file(s) 
-ADD files/containers.conf ${USER_HOME}/containers/containers.conf
-ADD files/registries.conf ${USER_HOME}/containers/registries.conf
-RUN chown ${USER_GROUP}:${USER_NAME} ${USER_HOME}
+# Add podman configuration file(s) and permissions
+ADD files/containers.conf ${USER_HOME}/.config/containers/containers.conf
+ADD files/registries.conf ${USER_HOME}/.config/containers/registries.conf
+RUN mkdir -p ${USER_HOME}/.local/share/containers \
+    chown -R ${USER_GROUP}:${USER_NAME} ${USER_HOME}
+
+VOLUME ${USER_HOME}/.local/share/containers
 
 # Setup for rootless podman
 RUN usermod --add-subuids 100000-165535 --add-subgids 100000-165535 ${USER_NAME}
