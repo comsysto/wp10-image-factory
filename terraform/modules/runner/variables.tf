@@ -36,6 +36,12 @@ variable "username" {
 
 variable "ssh_key_name" {
   type        = string
-  description = "Name of the generated SSH key for the VM"
+  description = "Name of the generated SSH key for the VM."
   default     = "runnersshkey"
+}
+
+
+variable "runner_image_id" {
+  type        = string
+  description = "Shared Image Gallery ID of the runner VM image."
 }
