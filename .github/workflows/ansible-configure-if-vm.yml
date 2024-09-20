@@ -15,6 +15,7 @@ jobs:
     env:
       JUMPHOST_IP: ${{ secrets.JUMPHOST_IP }}
       RUNNER_HOST_IP: ${{ secrets.RUNNER_HOST_IP }}
+      SSH_KEY: ${{ secrets.SSH_KEY }}
 
       REGISTRY: ${{ secrets.REGISTRY_PRIVATE_ENDPOINT }}
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
@@ -26,7 +27,6 @@ jobs:
       ACR_RUNNER_IMAGE_NAME: ${{ vars.ACR_RUNNER_IMAGE_NAME }}
 
       ANSIBLE_VERSION: 2.17.4
-      AZURE_VM_SSH_KEY: ${{ secrets.AZURE_VM_SSH_KEY }}
 
     steps:
       - name: Checkout Repository
