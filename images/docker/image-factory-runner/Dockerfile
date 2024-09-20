@@ -81,6 +81,9 @@ RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-ke
     apt-get update && \
     apt-get install trivy
 
+# Add gha to sudoers --> TESTING ONLY!!!
+RUN echo 'gha ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/gha
+
 # Set runner user
 USER ${USER_NAME}
 
