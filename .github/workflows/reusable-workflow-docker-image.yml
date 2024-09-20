@@ -3,7 +3,7 @@ name: Reusable workflow - build docker image
 on:
   workflow_call:
     inputs:
-      container-name:
+      image-name:
         required: true
         type: string
       dockerfile:
@@ -15,9 +15,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      IMAGE_NAME: ${{ inputs.container-name }}
+      IMAGE_NAME: ${{ inputs.image-name }}
       IMAGE_TAG: "${{ github.run_number }}"
       REGISTRY: ${{ secrets.REGISTRY }}
+      DOCKERFILE: ${{ inputs.dockerfile }}
 
     steps:
       - name: Checkout Repository
@@ -31,7 +32,7 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build Docker Image
-        run: docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $dockerfile
+        run: docker build -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKERFILE
 
       - name: Push Docker image
         run: |
