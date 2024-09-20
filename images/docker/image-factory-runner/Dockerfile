@@ -39,7 +39,7 @@ RUN mkdir -p ${USER_HOME} && \
 # Add podman configuration file(s) and permissions
 ADD files/containers.conf ${USER_HOME}/.config/containers/containers.conf
 ADD files/registries.conf ${USER_HOME}/.config/containers/registries.conf
-RUN mkdir -p ${USER_HOME}/.local/share/containers \
+RUN mkdir -p ${USER_HOME}/.local/share/containers && \
     chown -R ${USER_GROUP}:${USER_NAME} ${USER_HOME}
 
 VOLUME ${USER_HOME}/.local/share/containers
