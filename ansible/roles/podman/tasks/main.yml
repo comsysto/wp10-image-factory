@@ -50,6 +50,7 @@
     name: "{{ runner_image_name }}"
     dest: /usr/lib/systemd/system
     new: true
+    force: true
     restart_policy: always
   become: yes
 
