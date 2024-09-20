@@ -54,7 +54,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "prcg" {
         type = "Https"
         port = 443
       }
-      destination_fqdns = ["www.microsoft.com", "*.github.com", "www.comsystoreply.de", "*.docker.com"]
+      destination_fqdns = ["www.microsoft.com", "*.github.com", "www.comsystoreply.de", "*.docker.com", "*.docker.io"]
       source_addresses  = ["10.0.1.0/24", "10.0.2.0/24"]
     }
 
