@@ -38,7 +38,6 @@ RUN mkdir -p ${USER_HOME}/containers && \
 # Add podman configuration file(s) 
 ADD files/containers.conf ${USER_HOME}/containers/containers.conf
 ADD files/registries.conf ${USER_HOME}/containers/registries.conf
-ADD files/auth.json ${USER_HOME}/containers/auth.json
 RUN chown ${USER_GROUP}:${USER_NAME} ${USER_HOME}
 
 # Setup for rootless podman
