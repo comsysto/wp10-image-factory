@@ -57,17 +57,13 @@ jobs:
       - name: Print Ansible Version
         run: ansible-playbook --version
 
-      - name: Setup Ansible connection
+      - name: Configure VM with ansible
         run: |
           cd ansible
           eval "$(ssh-agent -s)"
           chmod 600 ansible_ssh_key
           ssh-add ansible_ssh_key
           cat inventory.ini
-
-      - name: Configure VM with Ansible
-        run: |
-          cd ansible
           ansible-playbook configure-image-factory-vm.yml
 
 # Test comment to trigger build #
