@@ -20,7 +20,7 @@ jobs:
     env:
       IMAGE_NAME: ${{ inputs.image-name }}
       IMAGE_TAG: "${{ github.run_number }}"
-      REGISTRY: ${{ secrets.REGISTRY }}
+      REGISTRY: ${{ vars.REGISTRY }}
       DOCKER_DIR: ${{ inputs.docker-dir }}
       PLATFORM: ${{ inputs.platform }}
 
