@@ -15,7 +15,7 @@ on:
 
 jobs:
   docker-build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     env:
       IMAGE_NAME: ${{ inputs.image-name }}
@@ -36,52 +36,52 @@ jobs:
             exit 1
           fi
 
-      - name: Log in to Azure Container Registry
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ secrets.REGISTRY }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+      # - name: Log in to Azure Container Registry
+      #   uses: azure/docker-login@v1
+      #   with:
+      #     login-server: ${{ secrets.REGISTRY }}
+      #     username: ${{ secrets.ACR_USERNAME }}
+      #     password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker Image
-        run: |
-          echo "Building image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          docker build --platform linux/$PLATFORM -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
+      # - name: Build Docker Image
+      #   run: |
+      #     echo "Building image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+      #     docker build --platform linux/$PLATFORM -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
 
-      - name: Push Docker image
-        run: |
-          docker push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
+      # - name: Push Docker image
+      #   run: |
+      #     docker push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
 
-      - name: Setup Trivy
-        run: |
-          sudo apt-get install wget apt-transport-https gnupg lsb-release
-          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-          echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
-          sudo apt-get update
-          sudo apt-get install trivy
+      # - name: Setup Trivy
+      #   run: |
+      #     sudo apt-get install wget apt-transport-https gnupg lsb-release
+      #     wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+      #     echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+      #     sudo apt-get update
+      #     sudo apt-get install trivy
 
-      - name: Check image with Trivy
-        run: |
-          mkdir build-artifacts
-          trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG >> build-artifacts/vuln-scan.txt
-          cat build-artifacts/vuln-scan.txt
-          trivy image --format spdx ubuntu:rolling >> build-artifacts/sbom-spdx.txt
-          trivy image --format cyclonedx ubuntu:rolling >> build-artifacts/sbom-cyclonedx.txt
+      # - name: Check image with Trivy
+      #   run: |
+      #     mkdir build-artifacts
+      #     trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG >> build-artifacts/vuln-scan.txt
+      #     cat build-artifacts/vuln-scan.txt
+      #     trivy image --format spdx ubuntu:rolling >> build-artifacts/sbom-spdx.txt
+      #     trivy image --format cyclonedx ubuntu:rolling >> build-artifacts/sbom-cyclonedx.txt
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: build-artifacts/*
+      # - name: Upload Artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: build-artifacts
+      #     path: build-artifacts/*
 
-      - name: Tag and push Docker image as latest
-        # if: github.ref == 'refs/heads/main' # TODO: uncomment once we are done with development
-        run: |
-          docker tag $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $REGISTRY/$IMAGE_NAME:latest
-          docker push $REGISTRY/$IMAGE_NAME:latest
+      # - name: Tag and push Docker image as latest
+      #   # if: github.ref == 'refs/heads/main' # TODO: uncomment once we are done with development
+      #   run: |
+      #     docker tag $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $REGISTRY/$IMAGE_NAME:latest
+      #     docker push $REGISTRY/$IMAGE_NAME:latest
