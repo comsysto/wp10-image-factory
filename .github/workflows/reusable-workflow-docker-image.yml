@@ -49,6 +49,7 @@ jobs:
       - name: Check image with Trivy
         run: |
           mkdir build-artifacts
+          echo "$REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
           trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG >> build-artifacts/vuln-scan.txt
           cat build-artifacts/vuln-scan.txt
           trivy image --format spdx ubuntu:rolling >> build-artifacts/sbom-spdx.txt
