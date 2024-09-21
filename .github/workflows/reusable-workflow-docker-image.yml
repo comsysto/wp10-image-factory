@@ -23,7 +23,6 @@ jobs:
       REGISTRY: ${{ secrets.REGISTRY }}
       DOCKER_DIR: ${{ inputs.docker-dir }}
       PLATFORM: ${{ inputs.platform }}
-      DOCKER_HOST: "unix:///run/podman/podman.sock"
 
     steps:
       - name: Checkout Repository
@@ -55,7 +54,7 @@ jobs:
           echo ""=======> Print available images:"
           podman image ls
           echo ""=======> Scan image with trivy:"
-          trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG >> build-artifacts/vuln-scan.txt
+          trivy image wp10tfdevacr.azurecr.io/$IMAGE_NAME:$IMAGE_TAG >> build-artifacts/vuln-scan.txt
           
           # cat build-artifacts/vuln-scan.txt
           # trivy image --format spdx ubuntu:rolling >> build-artifacts/sbom-spdx.txt
@@ -73,4 +72,4 @@ jobs:
           podman tag $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $REGISTRY/$IMAGE_NAME:latest
           podman push $REGISTRY/$IMAGE_NAME:latest
 
-          
+
