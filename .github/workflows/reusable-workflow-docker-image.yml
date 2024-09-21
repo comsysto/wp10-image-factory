@@ -28,32 +28,32 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Input Validation
-        run: |
-          if [[ "$PLATFORM" != "amd64" ]] && \
-             [[ "$PLATFORM" != "arm64" ]]; then
-            echo "Invalid environment: $PLATFORM"
-            exit 1
-          fi
+      # - name: Input Validation
+      #   run: |
+      #     if [[ "$PLATFORM" != "amd64" ]] && \
+      #        [[ "$PLATFORM" != "arm64" ]]; then
+      #       echo "Invalid environment: $PLATFORM"
+      #       exit 1
+      #     fi
 
-      - name: Build Container Image
-        run: |
-          echo "Building image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          podman build --platform linux/$PLATFORM -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
+      # - name: Build Container Image
+      #   run: |
+      #     echo "Building image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+      #     podman build --platform linux/$PLATFORM -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
 
-      - name: Push Container Image
-        run: |
-          echo "Pushing image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          podman push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG      
+      # - name: Push Container Image
+      #   run: |
+      #     echo "Pushing image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+      #     podman push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG      
 
-      - name: Pull images
-        run: |
-          # podman pull docker.io/library/ubuntu:22.04
-          podman pull $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
+      # - name: Pull images
+      #   run: |
+      #     # podman pull docker.io/library/ubuntu:22.04
+      #     podman pull $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
 
-      - name: List images
-        run: |
-          podman image ls
+      # - name: List images
+      #   run: |
+      #     podman image ls
 
       # - name: Check ubuntu image with Trivy
       #   run: |  
@@ -70,6 +70,14 @@ jobs:
       - name: Check our image with Trivy
         run: |  
           trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
+        env:
+          REGISTRY: "wp10tfdevacr.azurecr.io"
+          IMAGE_NAME: "silvija-test"
+          IMAGE_TAG: "64"
+
+      # - name: Check our image with Trivy
+      #   run: |  
+      #     trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
 
       # - name: Check image with Trivy
       #   run: |
