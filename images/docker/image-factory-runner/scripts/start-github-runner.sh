@@ -4,6 +4,7 @@ GITHUB_OWNER=$GITHUB_OWNER
 GITHUB_REPOSITORY=$GITHUB_REPOSITORY
 GITHUB_TOKEN=$(cat /.pat/.token)
 GITHUB_RUNNER_NAME="if-runner-$(hostname)"
+GITHUB_LABELS="wp10-image-factory"
 
 echo "Log in to container registry:"
 podman login "$CONTAINER_REGISTRY" \
@@ -24,6 +25,7 @@ cd actions-runner
   --url https://github.com/${GITHUB_OWNER}/${GITHUB_REPOSITORY} \
   --token ${REG_TOKEN} \
   --name ${GITHUB_RUNNER_NAME} \
+  --labels ${GITHUB_LABELS} \
   --unattended \
   --ephemeral \
   --replace \
