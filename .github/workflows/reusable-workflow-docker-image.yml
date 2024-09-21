@@ -60,7 +60,7 @@ jobs:
         run: |
           trivy image --format spdx $REGISTRY/$IMAGE_NAME:$IMAGE_TAG > build-artifacts/sbom-spdx.txt
           trivy image --format cyclonedx $REGISTRY/$IMAGE_NAME:$IMAGE_TAG > build-artifacts/sbom-cyclonedx.txt
-          
+
       # - name: Check image with Trivy
       #   run: |
       #     mkdir build-artifacts
@@ -74,11 +74,11 @@ jobs:
       #     trivy image --format spdx ubuntu:rolling >> build-artifacts/sbom-spdx.txt
       #     trivy image --format cyclonedx ubuntu:rolling >> build-artifacts/sbom-cyclonedx.txt
 
-      # - name: Upload Artifacts
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: build-artifacts
-      #     path: build-artifacts/*
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: build-artifacts/*
 
       # - name: Tag and push Docker image as latest
       #   # if: github.ref == 'refs/heads/main' # TODO: uncomment once we are done with development
