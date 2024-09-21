@@ -13,11 +13,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      JUMPHOST_IP: ${{ secrets.JUMPHOST_IP }}
-      RUNNER_HOST_IP: ${{ secrets.RUNNER_HOST_IP }}
-      SSH_KEY: ${{ secrets.SSH_KEY }}
+      # Tell GitHub which VM host to use (air-gapped or development) -> TODO: remove when devel env is no longer needed
+      VM_ENV: "air-gapped"
 
-      REGISTRY: ${{ secrets.REGISTRY_PRIVATE_ENDPOINT }}
+      REGISTRY: ${{ secrets.REGISTRY }} 
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
       ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
 
@@ -32,42 +31,68 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Template Ansible private key file
+
+      # Development environment - VM host with internet access -> TODO: remove when devel env is no longer needed
+      - name: Template Ansible private key file for development environment
         uses: cuchi/jinja2-action@v1.2.2
+        env:
+          SSH_KEY: ${{ secrets.AZURE_VM_SSH_KEY }}
+        if: env.VM_ENV == "development"
         with:
           template: ansible/templates/ansible_ssh_key.j2
           output_file: ansible/ansible_ssh_key
 
-      - name: Template Ansible vars file
+      # Development environment - VM host with internet access -> TODO: remove when devel env is no longer needed
+      - name: Template Ansible inventory for development environment
         uses: cuchi/jinja2-action@v1.2.2
-        with:
-          template: ansible/templates/group_vars_all.yml.j2
-          output_file: ansible/group_vars/all.yml
-
-      - name: Template Ansible inventory
-        uses: cuchi/jinja2-action@v1.2.2
+        env:
+          RUNNER_HOST_IP: ${{ secrets.AZURE_IF_RUNNER_IP }}
+        if: env.VM_ENV == "development"
         with:
           template: ansible/templates/inventory.ini.j2
           output_file: ansible/inventory.ini
 
-      - name: Template Ansible private key file
+
+      # Air-gapped environment - VM host without internet access
+      - name: Template Ansible private key file for air-gapped environment
         uses: cuchi/jinja2-action@v1.2.2
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        if: env.VM_ENV == "air-gapped" # -> TODO: remove condition when devel env is no longer needed
         with:
           template: ansible/templates/ansible_ssh_key.j2
           output_file: ansible/ansible_ssh_key
 
-      - name: Install Ansible
-        run: |
-          pip3 install ansible
-          ansible-playbook --version
+      # Air-gapped environment - VM host without internet access
+      - name: Template Ansible inventory for air-gapped environment
+        uses: cuchi/jinja2-action@v1.2.2
+        env:
+          JUMPHOST_IP: ${{ secrets.JUMPHOST_IP }}
+          RUNNER_HOST_IP: ${{ secrets.RUNNER_HOST_IP }}
+        if: env.VM_ENV == "air-gapped" # -> TODO: remove condition when devel env is no longer needed
+        with:
+          template: ansible/templates/inventory.ini.j2
+          output_file: ansible/inventory.ini
 
-      - name: Configure VM with ansible
-        run: |
-          cd ansible
-          cat inventory.ini
-          eval "$(ssh-agent -s)"
-          chmod 600 ansible_ssh_key
-          ssh-add ansible_ssh_key
-          ssh_command="ssh -o StrictHostKeyChecking=no azureadmin@${JUMPHOST_IP} 'ssh -o StrictHostKeyChecking=no azureadmin@${RUNNER_HOST_IP} whoami'"
-          eval $ssh_command
-          ansible-playbook configure-image-factory-vm.yml
+
+      # - name: Template Ansible vars file
+      #   uses: cuchi/jinja2-action@v1.2.2
+      #   with:
+      #     template: ansible/templates/group_vars_all.yml.j2
+      #     output_file: ansible/group_vars/all.yml
+
+      # - name: Install Ansible
+      #   run: |
+      #     pip3 install ansible
+      #     ansible-playbook --version
+
+      # # - name: Configure VM with ansible
+      # #   run: |
+      # #     cd ansible
+      # #     cat inventory.ini
+      # #     eval "$(ssh-agent -s)"
+      # #     chmod 600 ansible_ssh_key
+      # #     ssh-add ansible_ssh_key
+      # #     ssh_command="ssh -o StrictHostKeyChecking=no azureadmin@${JUMPHOST_IP} 'ssh -o StrictHostKeyChecking=no azureadmin@${RUNNER_HOST_IP} whoami'"
+      # #     eval $ssh_command
+      # #     ansible-playbook configure-image-factory-vm.yml
