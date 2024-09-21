@@ -14,7 +14,7 @@ jobs:
 
     env:
       # Tell GitHub which VM host to use (air-gapped or development) -> TODO: remove when devel env is no longer needed
-      VM_ENV: 'air-gapped'
+      VM_ENV: ${{ vars.VM_ENV }}
 
       REGISTRY: ${{ secrets.REGISTRY }} 
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
