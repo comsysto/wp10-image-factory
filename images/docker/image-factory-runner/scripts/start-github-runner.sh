@@ -14,10 +14,10 @@ podman login "$CONTAINER_REGISTRY" \
 echo "Configure registries:"
 cat <<EOF > $HOME/.config/containers/registries.conf
 [registries]
-registries = ["$CONTAINER_REGISTRY"]
+registries = ["$CONTAINER_REGISTRY", "docker.io"]
 
 [registries.search]
-registries = ["$CONTAINER_REGISTRY"]
+registries = ["$CONTAINER_REGISTRY", "docker.io"]
 EOF
 
 # REG_TOKEN Token will be available only during container startup
