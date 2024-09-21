@@ -69,3 +69,5 @@ jobs:
         run: |
           podman tag $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $REGISTRY/$IMAGE_NAME:latest
           podman push $REGISTRY/$IMAGE_NAME:latest
+
+          
