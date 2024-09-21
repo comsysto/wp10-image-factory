@@ -24,6 +24,8 @@ apt-get install --no-install-recommends -y \
     libcap2-bin \
     lsb-release \
     podman \
+    qemu \
+    qemu-user-static \
     slirp4netns \
     software-properties-common \
     unzip \
