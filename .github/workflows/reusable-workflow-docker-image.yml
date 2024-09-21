@@ -28,41 +28,41 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # - name: Input Validation
-      #   run: |
-      #     if [[ "$PLATFORM" != "amd64" ]] && \
-      #        [[ "$PLATFORM" != "arm64" ]]; then
-      #       echo "Invalid environment: $PLATFORM"
-      #       exit 1
-      #     fi
+      - name: Input Validation
+        run: |
+          if [[ "$PLATFORM" != "amd64" ]] && \
+             [[ "$PLATFORM" != "arm64" ]]; then
+            echo "Invalid environment: $PLATFORM"
+            exit 1
+          fi
 
-      # - name: Build Container Image
-      #   run: |
-      #     echo "Building image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-      #     podman build --platform linux/$PLATFORM -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
+      - name: Build Container Image
+        run: |
+          echo "Building image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+          podman build --platform linux/$PLATFORM -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
 
-      # - name: Push Container Image
-      #   run: |
-      #     echo "Pushing image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-      #     podman push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG      
+      - name: Push Container Image
+        run: |
+          echo "Pushing image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+          podman push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG      
 
       - name: Check ubuntu image with Trivy
         run: |
           podman pull docker.io/library/ubuntu:22.04
           trivy image docker.io/library/ubuntu:22.04
 
-      # - name: Check image with Trivy
-      #   run: |
-      #     mkdir build-artifacts
-      #     echo "=======> Print image for trivy scan:"
-      #     echo "$REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-      #     echo ""=======> Print available images:"
-      #     podman image ls
-      #     echo ""=======> Scan image with trivy:"
-      #     trivy image wp10tfdevacr.azurecr.io/$IMAGE_NAME:$IMAGE_TAG >> build-artifacts/vuln-scan.txt
-      #     cat build-artifacts/vuln-scan.txt
-      #     trivy image --format spdx ubuntu:rolling >> build-artifacts/sbom-spdx.txt
-      #     trivy image --format cyclonedx ubuntu:rolling >> build-artifacts/sbom-cyclonedx.txt
+      - name: Check image with Trivy
+        run: |
+          mkdir build-artifacts
+          echo "=======> Print image for trivy scan:"
+          echo "$REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+          echo ""=======> Print available images:"
+          podman image ls
+          echo ""=======> Scan image with trivy:"
+          trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG >> build-artifacts/vuln-scan.txt
+          cat build-artifacts/vuln-scan.txt
+          trivy image --format spdx ubuntu:rolling >> build-artifacts/sbom-spdx.txt
+          trivy image --format cyclonedx ubuntu:rolling >> build-artifacts/sbom-cyclonedx.txt
 
       # - name: Upload Artifacts
       #   uses: actions/upload-artifact@v4
