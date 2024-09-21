@@ -23,8 +23,6 @@ RUN apt-get update -y && \
     libcap2-bin \
     lsb-release \
     podman \
-    qemu \
-    qemu-user-static \
     slirp4netns \
     software-properties-common \
     sudo \
