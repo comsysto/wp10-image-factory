@@ -41,15 +41,19 @@ jobs:
           echo "Building image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
           podman build --platform linux/$PLATFORM -t $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $DOCKER_DIR
 
-      - name: Push Container Image
+      # - name: Push Container Image
+      #   run: |
+      #     echo "Pushing image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
+      #     podman push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG      
+
+      - name: List local images
         run: |
-          echo "Pushing image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          podman push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG      
+          podman pull docker.io/library/ubuntu:22.04
+          podman image ls
 
       - name: Check ubuntu image with Trivy
-        run: |
-          podman pull wp10tfdevacr.azurecr.io/silvija-test:56
-          trivy image wp10tfdevacr.azurecr.io/silvija-test:56
+        run: |  
+          trivy image docker.io/library/ubuntu:22.04
 
       # - name: Check image with Trivy
       #   run: |
