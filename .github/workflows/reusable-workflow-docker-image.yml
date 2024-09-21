@@ -47,6 +47,7 @@ jobs:
           podman push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG      
 
       - name: Check image with Trivy
+        shell: bash
         run: |
           mkdir build-artifacts
           echo "=======> Print image for trivy scan:"
