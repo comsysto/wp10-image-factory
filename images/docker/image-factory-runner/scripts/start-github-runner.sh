@@ -3,7 +3,7 @@
 GITHUB_OWNER=$GITHUB_OWNER
 GITHUB_REPOSITORY=$GITHUB_REPOSITORY
 GITHUB_TOKEN=$(cat /.pat/.token)
-GITHUB_RUNNER_NAME="image-factory-runner"
+GITHUB_RUNNER_NAME="if-runner-$(hostname)"
 
 echo "Log in to container registry:"
 podman login "$CONTAINER_REGISTRY" \
@@ -23,7 +23,7 @@ cd actions-runner
 ./config.sh \
   --url https://github.com/${GITHUB_OWNER}/${GITHUB_REPOSITORY} \
   --token ${REG_TOKEN} \
-  --name ${RUNNER_NAME} \
+  --name ${GITHUB_RUNNER_NAME} \
   --unattended \
   --ephemeral \
   --replace \
