@@ -51,6 +51,13 @@ jobs:
           echo "Pushing image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
           podman push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG      
 
+      - name: Tag and push Docker image as latest
+        # if: github.ref == 'refs/heads/main' # TODO: uncomment once we are done with development
+        run: |
+          echo "Pushing image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG with as latest"
+          podman tag $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $REGISTRY/$IMAGE_NAME:latest
+          podman push $REGISTRY/$IMAGE_NAME:latest
+  
       - name: Scan image for vulnerabilites
         run: |
           mkdir build-artifacts
