@@ -49,14 +49,16 @@ jobs:
       - name: Check image with Trivy
         run: |
           mkdir build-artifacts
-          echo "Image for trivy scan:"
+          echo "=======> Print image for trivy scan:"
           echo "$REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          echo "Available images:"
+          echo ""=======> Print available images:"
           podman image ls
+          echo ""=======> Scan image with trivy:"
           trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG >> build-artifacts/vuln-scan.txt
-          cat build-artifacts/vuln-scan.txt
-          trivy image --format spdx ubuntu:rolling >> build-artifacts/sbom-spdx.txt
-          trivy image --format cyclonedx ubuntu:rolling >> build-artifacts/sbom-cyclonedx.txt
+          
+          # cat build-artifacts/vuln-scan.txt
+          # trivy image --format spdx ubuntu:rolling >> build-artifacts/sbom-spdx.txt
+          # trivy image --format cyclonedx ubuntu:rolling >> build-artifacts/sbom-cyclonedx.txt
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
