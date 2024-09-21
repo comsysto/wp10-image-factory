@@ -65,7 +65,7 @@ jobs:
         env:
           REGISTRY: "docker.io/library"
           IMAGE_NAME: "ubuntu"
-          IMAGE_TAG: "22.04"
+          IMAGE_TAG: "24.04"
 
       - name: Check our image with Trivy
         run: |  
