@@ -48,7 +48,7 @@ jobs:
           RUNNER_HOST_IP: ${{ secrets.AZURE_IF_RUNNER_IP }}
         if: env.VM_ENV == 'development'
         with:
-          template: ansible/templates/inventory.ini.j2
+          template: ansible/templates/inventory-devel.ini.j2
           output_file: ansible/inventory.ini
 
 
