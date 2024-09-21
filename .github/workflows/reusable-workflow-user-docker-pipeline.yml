@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
+      - ".github/workflows/reusable-workflow-user-docker-pipeline.yml"
       - ".github/workflows/reusable-workflow-docker-image.yml"
       - "user/**"
 
