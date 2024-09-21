@@ -59,7 +59,7 @@ jobs:
       #   run: |  
       #     trivy image docker.io/library/ubuntu:22.04
 
-      - name: Check our image with Trivy
+      - name: Check ubuntu with Trivy
         run: |  
           trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
         env:
@@ -70,10 +70,6 @@ jobs:
       - name: Check our image with Trivy
         run: |  
           trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
-        env:
-          REGISTRY: "docker.io/library"
-          IMAGE_NAME: "ubuntu"
-          IMAGE_TAG: "22.04"
 
       # - name: Check image with Trivy
       #   run: |
