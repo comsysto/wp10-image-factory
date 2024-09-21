@@ -46,7 +46,6 @@ RUN apt-get update -y && \
 RUN groupadd -r ${USER_GROUP} && \
     useradd -r -d ${USER_HOME} -s /sbin/nologin -g ${USER_GROUP} -c "GitHub Actions User" ${USER_NAME} && \
     mkdir -p ${USER_HOME}/.config/containers && \
-    mkdir -p ${USER_HOME}/.local/share/containers && \
     chown -R ${USER_NAME}:${USER_GROUP} ${USER_HOME}
 
 # Setup for rootless podman
