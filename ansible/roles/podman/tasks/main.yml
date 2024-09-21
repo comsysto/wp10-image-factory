@@ -36,7 +36,6 @@
     name: "{{ runner_image_name }}"
     image: "{{ runner_image_name }}"
     privileged: true # TODO: further podman setup is needed to disable this flag
-    network: host
     env:
       GITHUB_OWNER: "{{ github_owner }}"
       GITHUB_REPOSITORY: "{{ github_repository }}"
@@ -45,7 +44,6 @@
       CONTAINER_REGISTRY_PASSWORD: "{{ azure_container_registry_password }}"
     volumes:
       - /.pat:/.pat
-      - /var/run/podman:/var/run/podman
     state: created 
   become: yes
 
