@@ -19,5 +19,5 @@ variable "subnet_id" {
 }
 
 variable "virtual_network" {
-  description = "Private endpoint subnet"
+  description = "Virtual network"
 }

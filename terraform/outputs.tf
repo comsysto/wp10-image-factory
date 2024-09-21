@@ -1,7 +1,11 @@
-output "resource_group_name" {
-  value = module.network
+output "network_name" {
+  value = module.network.resource_group.name
 }
 
-output "key_data" {
-  value = module.runner.key_data
+output "runner_data" {
+  value = (var.local_development == true ? module.runner : null)
+}
+
+output "encrypted_gh_secrets" {
+  value = (var.local_development == true ? module.github_output : null)
 }
