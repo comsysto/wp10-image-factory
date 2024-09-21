@@ -49,10 +49,6 @@ RUN groupadd -r ${USER_GROUP} && \
     mkdir -p ${USER_HOME}/.local/share/containers && \
     chown -R ${USER_NAME}:${USER_GROUP} ${USER_HOME}
 
-# Add podman configuration files
-COPY files/containers.conf ${USER_HOME}/.config/containers/containers.conf
-COPY files/registries.conf ${USER_HOME}/.config/containers/registries.conf
-
 # Setup for rootless podman
 # referrence: https://github.com/containers/podman/issues/2788#issuecomment-1016301663
 RUN usermod --add-subuids 100000-165535 --add-subgids 100000-165535 ${USER_NAME} && \
@@ -60,9 +56,9 @@ RUN usermod --add-subuids 100000-165535 --add-subgids 100000-165535 ${USER_NAME}
     setcap cap_setuid+eip /usr/bin/newuidmap && \
     setcap cap_setgid+eip /usr/bin/newgidmap 
 
-# QEMU setup
-RUN update-binfmts --enable qemu-aarch64 && \
-    update-binfmts --enable qemu-arm
+# # QEMU setup
+# RUN update-binfmts --enable qemu-aarch64 && \
+#     update-binfmts --enable qemu-arm
 
 # Change to runner workdir
 WORKDIR ${USER_HOME}
