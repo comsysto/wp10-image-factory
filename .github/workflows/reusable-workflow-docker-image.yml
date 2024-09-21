@@ -61,29 +61,9 @@ jobs:
           trivy image --format spdx $REGISTRY/$IMAGE_NAME:$IMAGE_TAG > build-artifacts/sbom-spdx.txt
           trivy image --format cyclonedx $REGISTRY/$IMAGE_NAME:$IMAGE_TAG > build-artifacts/sbom-cyclonedx.txt
 
-      # - name: Check image with Trivy
-      #   run: |
-      #     mkdir build-artifacts
-      #     echo "=======> Print image for trivy scan:"
-      #     echo "$REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-      #     echo ""=======> Print available images:"
-      #     podman image ls
-      #     echo ""=======> Scan image with trivy:"
-      #     trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG >> build-artifacts/vuln-scan.txt
-      #     cat build-artifacts/vuln-scan.txt
-      #     trivy image --format spdx ubuntu:rolling >> build-artifacts/sbom-spdx.txt
-      #     trivy image --format cyclonedx ubuntu:rolling >> build-artifacts/sbom-cyclonedx.txt
-
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: image-scan-results
           path: build-artifacts/*
-
-      # - name: Tag and push Docker image as latest
-      #   # if: github.ref == 'refs/heads/main' # TODO: uncomment once we are done with development
-      #   run: |
-      #     podman tag $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $REGISTRY/$IMAGE_NAME:latest
-      #     podman push $REGISTRY/$IMAGE_NAME:latest
-
 
