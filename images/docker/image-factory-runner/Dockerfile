@@ -54,9 +54,6 @@ COPY files/containers.conf ${USER_HOME}/.config/containers/containers.conf
 COPY files/registries.conf ${USER_HOME}/.config/containers/registries.conf
 
 # Setup for rootless podman
-RUN usermod --add-subuids 100000-165535 --add-subgids 100000-165535 ${USER_NAME}
-
-# Setup for rootless podman
 # referrence: https://github.com/containers/podman/issues/2788#issuecomment-1016301663
 RUN usermod --add-subuids 100000-165535 --add-subgids 100000-165535 ${USER_NAME} && \
     chmod u-s /usr/bin/newuidmap /usr/bin/newgidmap && \
@@ -84,20 +81,17 @@ RUN actions-runner/bin/installdependencies.sh
 COPY scripts/start-github-runner.sh ${USER_HOME}/start-github-runner.sh
 RUN chmod +x start-github-runner.sh
 
-# Install packer
+# Install Packer, Azure CLI, and Trivy
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && \
     apt-add-repository "deb [arch=${RUNNER_ARCH}] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && \
     apt-get update -y && \
-    apt-get install packer
-
-# Install Azure CLI
-RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
-
-# Install Trivy
-RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add - && \
-    echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | tee -a /etc/apt/sources.list.d/trivy.list && \
+    apt-get install -y packer && \
+    curl -sL https://aka.ms/InstallAzureCLIDeb | bash && \
+    wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add - && \
+    echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | tee /etc/apt/sources.list.d/trivy.list && \
     apt-get update && \
-    apt-get install trivy
+    apt-get install -y trivy && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Update sudoers file to enable PAT token removal on runner startup
 COPY files/gha /etc/sudoers.d/gha
