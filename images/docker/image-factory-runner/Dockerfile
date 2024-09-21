@@ -22,6 +22,8 @@ RUN apt-get update -y && \
     libcap2-bin \
     lsb-release \
     podman \
+    qemu \
+    qemu-user-static \
     slirp4netns \
     software-properties-common \
     sudo \
@@ -29,7 +31,6 @@ RUN apt-get update -y && \
     vim \
     wget && \
     rm -rf /var/lib/apt/lists/*
-
 
 # Create runner user
 RUN mkdir -p ${USER_HOME}/containers && \
@@ -49,6 +50,10 @@ RUN usermod --add-subuids 100000-165535 --add-subgids 100000-165535 ${USER_NAME}
 RUN chmod u-s /usr/bin/newuidmap /usr/bin/newgidmap && \
     setcap cap_setuid+eip /usr/bin/newuidmap && \
     setcap cap_setgid+eip /usr/bin/newgidmap 
+
+# QEMU setup
+RUN update-binfmts --enable qemu-aarch64 && \
+    update-binfmts --enable qemu-arm
 
 # Change to runner workdir
 WORKDIR ${USER_HOME}
