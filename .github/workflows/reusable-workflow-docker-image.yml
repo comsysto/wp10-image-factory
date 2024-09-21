@@ -23,6 +23,7 @@ jobs:
       REGISTRY: ${{ secrets.REGISTRY }}
       DOCKER_DIR: ${{ inputs.docker-dir }}
       PLATFORM: ${{ inputs.platform }}
+      DOCKER_HOST: "unix:///run/podman/podman.sock"
 
     steps:
       - name: Checkout Repository
