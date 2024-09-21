@@ -85,7 +85,7 @@ jobs:
           ansible-playbook --version
           eval "$(ssh-agent -s)"
           chmod 600 ansible/ansible_ssh_key
-          ssh-add ansible_ssh_key
+          ssh-add ansible/ansible_ssh_key
 
       - name: Test connection to air-gapped VM (needed populate known_hosts file)
         if: env.VM_ENV == 'air-gapped' # -> TODO: remove condition when devel env is no longer needed
@@ -97,6 +97,9 @@ jobs:
         run: |
           cd ansible
           ansible-playbook configure-image-factory-vm.yml
+
+
+# TODO: change devel VM vars here and on github
 
       # # - name: Configure VM with ansible
       # #   run: |
