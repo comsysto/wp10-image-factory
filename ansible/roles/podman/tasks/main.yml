@@ -35,6 +35,7 @@
   containers.podman.podman_container:
     name: "{{ runner_image_name }}"
     image: "{{ runner_image_name }}"
+    privileged: true # TODO: further podman setup is needed to disable this flag
     env:
       GITHUB_OWNER: "{{ github_owner }}"
       GITHUB_REPOSITORY: "{{ github_repository }}"
