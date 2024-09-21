@@ -36,7 +36,7 @@ jobs:
       - name: Template Ansible private key file for development environment
         uses: cuchi/jinja2-action@v1.2.2
         env:
-          SSH_KEY: ${{ secrets.AZURE_VM_SSH_KEY }}
+          SSH_KEY: ${{ secrets.SSH_KEY_DEVEL }}
         if: env.VM_ENV == 'development'
         with:
           template: ansible/templates/ansible_ssh_key.j2
@@ -45,7 +45,7 @@ jobs:
       - name: Template Ansible inventory for development environment
         uses: cuchi/jinja2-action@v1.2.2
         env:
-          RUNNER_HOST_IP: ${{ secrets.AZURE_IF_RUNNER_IP }}
+          RUNNER_HOST_IP: ${{ secrets.RUNNER_HOST_IP_DEVEL }}
         if: env.VM_ENV == 'development'
         with:
           template: ansible/templates/inventory-devel.ini.j2
@@ -99,7 +99,6 @@ jobs:
           ansible-playbook configure-image-factory-vm.yml
 
 
-# TODO: change devel VM vars here and on github
 
       # # - name: Configure VM with ansible
       # #   run: |
