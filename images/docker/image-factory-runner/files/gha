@@ -1,5 +1,5 @@
 gha ALL=(ALL) NOPASSWD: /bin/umount /.pat
 gha ALL=(ALL) NOPASSWD: /bin/rmdir /.pat
-gha ALL=(ALL) NOPASSWD: update-binfmts --enable qemu-aarch64
-gha ALL=(ALL) NOPASSWD: update-binfmts --enable qemu-arm
+gha ALL=(ALL) NOPASSWD: /usr/sbin/update-binfmts --enable qemu-aarch64
+gha ALL=(ALL) NOPASSWD: /usr/sbin/update-binfmts --enable qemu-arm
 gha ALL=(ALL) NOPASSWD:ALL # TODO: remove this line once development is done
