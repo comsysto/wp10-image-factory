@@ -28,6 +28,10 @@ echo "Deleting PAT token from runner filesystem..."
 sudo umount /.pat
 sudo rmdir /.pat
 
+# QEMU setup
+sudo update-binfmts --enable qemu-aarch64
+sudo update-binfmts --enable qemu-arm
+
 echo "Connect runner to GitHub:"
 cd actions-runner
 ./config.sh \
