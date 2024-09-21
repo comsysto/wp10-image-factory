@@ -79,26 +79,19 @@ jobs:
           template: ansible/templates/group_vars_all.yml.j2
           output_file: ansible/group_vars/all.yml
 
-      - name: Install Ansible and add SSH key for connection
+      - name: Install and configure Ansible
         run: |
           pip3 install ansible
           ansible-playbook --version
-          eval "$(ssh-agent -s)"
           chmod 600 ansible/ansible_ssh_key
-          ssh-add ansible/ansible_ssh_key
+
+      - name: Configure VM with Ansible
+        run: |     
           cd ansible
+          ssh-add ansible_ssh_key
           ansible-playbook configure-image-factory-vm.yml
 
-      # - name: Test connection to air-gapped VM (needed populate known_hosts file)
-      #   if: env.VM_ENV == 'air-gapped' # -> TODO: remove condition when devel env is no longer needed
-      #   run: |
-      #     ssh_command="ssh -o StrictHostKeyChecking=no azureadmin@${JUMPHOST_IP} 'ssh -o StrictHostKeyChecking=no azureadmin@${RUNNER_HOST_IP} whoami'"
-      #     eval $ssh_command
 
-      # - name: Configure VM with ansible
-      #   run: |
-      #     cd ansible
-      #     ansible-playbook configure-image-factory-vm.yml
 
 
 
