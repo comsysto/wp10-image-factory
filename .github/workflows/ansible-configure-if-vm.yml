@@ -33,7 +33,7 @@ jobs:
 
 
       # Development environment - VM host with internet access -> TODO: remove when devel env is no longer needed
-      - name: Template Ansible private key file for development environment
+      - name: Template Ansible SSH key file for development environment
         uses: cuchi/jinja2-action@v1.2.2
         env:
           SSH_KEY: ${{ secrets.SSH_KEY_DEVEL }}
@@ -53,7 +53,7 @@ jobs:
 
 
       # Air-gapped environment - VM host without internet access
-      - name: Template Ansible private key file for air-gapped environment
+      - name: Template Ansible SSH key file for air-gapped environment
         uses: cuchi/jinja2-action@v1.2.2
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
@@ -86,17 +86,43 @@ jobs:
           eval "$(ssh-agent -s)"
           chmod 600 ansible/ansible_ssh_key
           ssh-add ansible/ansible_ssh_key
-
-      - name: Test connection to air-gapped VM (needed populate known_hosts file)
-        if: env.VM_ENV == 'air-gapped' # -> TODO: remove condition when devel env is no longer needed
-        run: |
-          ssh_command="ssh -o StrictHostKeyChecking=no azureadmin@${JUMPHOST_IP} 'ssh -o StrictHostKeyChecking=no azureadmin@${RUNNER_HOST_IP} whoami'"
-          eval $ssh_command
-
-      - name: Configure VM with ansible
-        run: |
           cd ansible
           ansible-playbook configure-image-factory-vm.yml
+
+      # - name: Test connection to air-gapped VM (needed populate known_hosts file)
+      #   if: env.VM_ENV == 'air-gapped' # -> TODO: remove condition when devel env is no longer needed
+      #   run: |
+      #     ssh_command="ssh -o StrictHostKeyChecking=no azureadmin@${JUMPHOST_IP} 'ssh -o StrictHostKeyChecking=no azureadmin@${RUNNER_HOST_IP} whoami'"
+      #     eval $ssh_command
+
+      # - name: Configure VM with ansible
+      #   run: |
+      #     cd ansible
+      #     ansible-playbook configure-image-factory-vm.yml
+
+
+
+      # - name: Install Ansible and add SSH key for connection
+      #   run: |
+      #     pip3 install ansible
+      #     ansible-playbook --version
+      #     eval "$(ssh-agent -s)"
+      #     chmod 600 ansible/ansible_ssh_key
+      #     ssh-add ansible/ansible_ssh_key
+
+      # - name: Test connection to air-gapped VM (needed populate known_hosts file)
+      #   if: env.VM_ENV == 'air-gapped' # -> TODO: remove condition when devel env is no longer needed
+      #   run: |
+      #     ssh_command="ssh -o StrictHostKeyChecking=no azureadmin@${JUMPHOST_IP} 'ssh -o StrictHostKeyChecking=no azureadmin@${RUNNER_HOST_IP} whoami'"
+      #     eval $ssh_command
+
+      # - name: Configure VM with ansible
+      #   run: |
+      #     cd ansible
+      #     ansible-playbook configure-image-factory-vm.yml
+
+
+
 
 
 
