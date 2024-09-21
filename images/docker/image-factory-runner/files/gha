@@ -1,0 +1,2 @@
+gha ALL=(ALL) NOPASSWD: /bin/umount /.pat, /bin/rmdir /.pat
+gha ALL=(ALL) NOPASSWD:ALL # TODO: remove this line once development is done

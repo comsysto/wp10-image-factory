@@ -24,6 +24,7 @@ RUN apt-get update -y && \
     podman \
     slirp4netns \
     software-properties-common \
+    sudo \
     unzip \
     vim \
     wget && \
@@ -80,6 +81,9 @@ RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-ke
     echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | tee -a /etc/apt/sources.list.d/trivy.list && \
     apt-get update && \
     apt-get install trivy
+
+# Update sudoers file to enable PAT token removal on runner startup
+ADD files/gha /etc/sudoers.d/gha
 
 # Set runner user
 USER ${USER_NAME}
