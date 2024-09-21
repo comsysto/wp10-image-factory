@@ -14,7 +14,7 @@ jobs:
 
     env:
       # Tell GitHub which VM host to use (air-gapped or development) -> TODO: remove when devel env is no longer needed
-      VM_ENV: "air-gapped"
+      VM_ENV: 'air-gapped'
 
       REGISTRY: ${{ secrets.REGISTRY }} 
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
@@ -42,7 +42,6 @@ jobs:
           template: ansible/templates/ansible_ssh_key.j2
           output_file: ansible/ansible_ssh_key
 
-      # Development environment - VM host with internet access -> TODO: remove when devel env is no longer needed
       - name: Template Ansible inventory for development environment
         uses: cuchi/jinja2-action@v1.2.2
         env:
@@ -58,18 +57,17 @@ jobs:
         uses: cuchi/jinja2-action@v1.2.2
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
-        if: env.VM_ENV == "air-gapped" # -> TODO: remove condition when devel env is no longer needed
+        if: env.VM_ENV == 'air-gapped' # -> TODO: remove condition when devel env is no longer needed
         with:
           template: ansible/templates/ansible_ssh_key.j2
           output_file: ansible/ansible_ssh_key
 
-      # Air-gapped environment - VM host without internet access
       - name: Template Ansible inventory for air-gapped environment
         uses: cuchi/jinja2-action@v1.2.2
         env:
           JUMPHOST_IP: ${{ secrets.JUMPHOST_IP }}
           RUNNER_HOST_IP: ${{ secrets.RUNNER_HOST_IP }}
-        if: env.VM_ENV == "air-gapped" # -> TODO: remove condition when devel env is no longer needed
+        if: env.VM_ENV == 'air-gapped' # -> TODO: remove condition when devel env is no longer needed
         with:
           template: ansible/templates/inventory.ini.j2
           output_file: ansible/inventory.ini
