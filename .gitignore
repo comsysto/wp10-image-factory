@@ -5,6 +5,7 @@
 *temp*.txt
 *.pem
 ssh.key
+**venv*
 
 !.github
 !.gitignore

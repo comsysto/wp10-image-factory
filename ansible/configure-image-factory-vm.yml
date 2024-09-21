@@ -1,0 +1,5 @@
+---
+- hosts: image-factory-vm
+  gather_facts: false
+  roles:
+  - podman

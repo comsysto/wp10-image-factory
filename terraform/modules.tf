@@ -14,6 +14,7 @@ module "runner" {
   resource_group_id       = module.network.resource_group.id
   public_subnet_id        = module.network.public_subnet.id
   private_subnet_id       = module.network.private_subnet.id
+  runner_image_id         = var.runner_image_id
 }
 
 
@@ -46,4 +47,13 @@ module "firewall" {
   public_subnet_id        = module.network.public_subnet.id
   private_subnet_id       = module.network.private_subnet.id
   virtual_network         = module.network.azurerm_virtual_network.name
+}
+
+module "github_output" {
+  source = "./modules/github_output"
+
+  repository     = var.repository
+  ssh_key        = module.runner.private_key
+  jumphost_ip    = module.runner.public_ip_address
+  runner_host_ip = module.runner.private_ip_address
 }

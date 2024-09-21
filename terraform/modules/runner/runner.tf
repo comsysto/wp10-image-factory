@@ -27,12 +27,7 @@ resource "azurerm_linux_virtual_machine" "runner" {
     storage_account_type = "Premium_LRS"
   }
 
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "ubuntu-24_04-lts"
-    sku       = "server"
-    version   = "latest"
-  }
+  source_image_id = var.runner_image_id
 
   admin_ssh_key {
     username   = var.username

@@ -1,0 +1,65 @@
+---
+- name: Ensure PAT directory exists
+  ansible.builtin.file:
+    path: /.pat
+    state: directory
+  become: yes
+
+- name: Template PAT token file
+  ansible.builtin.template:
+    src: token.j2
+    dest: /.pat/.token
+  become: yes
+
+- name: Template container registries file
+  ansible.builtin.template:
+    src: registries.conf.j2
+    dest: /etc/containers/registries.conf
+  become: true
+
+- name: Login to default registry
+  containers.podman.podman_login:
+    username: "{{ azure_container_registry_username }}"
+    password: "{{ azure_container_registry_password }}"
+    # authfile: /etc/containers/auth.json
+  become: true
+
+- name: Pull runner image
+  containers.podman.podman_image:
+    name: "{{ runner_image_name }}"
+    tag: latest
+    # force: yes
+  become: yes
+
+- name: Create the container without starting it
+  containers.podman.podman_container:
+    name: "{{ runner_image_name }}"
+    image: "{{ runner_image_name }}"
+    privileged: true # TODO: further podman setup is needed to disable this flag
+    env:
+      GITHUB_OWNER: "{{ github_owner }}"
+      GITHUB_REPOSITORY: "{{ github_repository }}"
+      CONTAINER_REGISTRY: "{{ azure_container_registry }}"
+      CONTAINER_REGISTRY_USERNAME: "{{ azure_container_registry_username }}"
+      CONTAINER_REGISTRY_PASSWORD: "{{ azure_container_registry_password }}"
+    volumes:
+      - /.pat:/.pat
+    state: created 
+  become: yes
+
+- name: Generate systemd unit file for runner container
+  containers.podman.podman_generate_systemd:
+    name: "{{ runner_image_name }}"
+    dest: /usr/lib/systemd/system
+    new: true
+    force: true
+    restart_policy: always
+  become: yes
+
+- name: Ensure runner container is started and enabled
+  ansible.builtin.systemd:
+    name: "container-{{ runner_image_name }}"
+    daemon_reload: true
+    state: restarted
+    enabled: true
+  become: yes
