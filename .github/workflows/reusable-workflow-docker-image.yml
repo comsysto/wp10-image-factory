@@ -48,7 +48,7 @@ jobs:
 
       - name: Pull images
         run: |
-          podman pull docker.io/library/ubuntu:22.04
+          # podman pull docker.io/library/ubuntu:22.04
           podman pull $REGISTRY/$IMAGE_NAME:$IMAGE_TAG
 
       - name: List images
