@@ -44,6 +44,7 @@
       CONTAINER_REGISTRY_PASSWORD: "{{ azure_container_registry_password }}"
     volumes:
       - /.pat:/.pat
+      - /var/run/podman:/var/run/podman
     state: created 
   become: yes
 
