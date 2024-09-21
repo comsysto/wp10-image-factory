@@ -16,6 +16,10 @@ jobs:
       # Tell GitHub which VM host to use (air-gapped or development) -> TODO: remove when devel env is no longer needed
       VM_ENV: ${{ vars.VM_ENV }}
 
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      JUMPHOST_IP: ${{ secrets.JUMPHOST_IP }}
+      RUNNER_HOST_IP: ${{ secrets.RUNNER_HOST_IP }}
+
       REGISTRY: ${{ secrets.REGISTRY }} 
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
       ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
@@ -55,8 +59,6 @@ jobs:
       # Air-gapped environment - VM host without internet access
       - name: Template Ansible SSH key file for air-gapped environment
         uses: cuchi/jinja2-action@v1.2.2
-        env:
-          SSH_KEY: ${{ secrets.SSH_KEY }}
         if: env.VM_ENV == 'air-gapped' # -> TODO: remove condition when devel env is no longer needed
         with:
           template: ansible/templates/ansible_ssh_key.j2
@@ -64,9 +66,6 @@ jobs:
 
       - name: Template Ansible inventory for air-gapped environment
         uses: cuchi/jinja2-action@v1.2.2
-        env:
-          JUMPHOST_IP: ${{ secrets.JUMPHOST_IP }}
-          RUNNER_HOST_IP: ${{ secrets.RUNNER_HOST_IP }}
         if: env.VM_ENV == 'air-gapped' # -> TODO: remove condition when devel env is no longer needed
         with:
           template: ansible/templates/inventory.ini.j2
@@ -88,6 +87,7 @@ jobs:
       - name: Configure VM with Ansible
         run: |     
           cd ansible
+          eval "$(ssh-agent -s)"
           ssh-add ansible_ssh_key
           ansible-playbook configure-image-factory-vm.yml
 
