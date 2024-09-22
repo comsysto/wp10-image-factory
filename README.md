@@ -7,15 +7,15 @@ Additionally, it provides reusable GitHub Actions workflows that users can invok
 
 ## Repository Structure
 
-- `ansible/`: Contains Ansible configuration and playbooks for setting up the VM.
-- `docs/`: Documentation files related to the project.
-- `images/`: Holds the Docker and Packer image configurations.
-  - `docker/`: Custom Docker image for GitHub runners.
-  - `packer/`: Packer template for building VM images.
-- `terraform/`: Terraform scripts for deploying various Azure components (resource group, vnet, subet, runner host vm etc.)
-  - `modules/`: Reusable Terraform modules for Azure resources.
-  - `scripts/`: Helper scripts for automation.
-- `terraform-init/`: Terraform scripts for setting up an Azure Storage Account used as Terraform state storage
+- [`ansible/`](./ansible/): Contains Ansible configuration and playbooks for setting up the VM.
+- [`docs/`](./docs/): Documentation files related to the project.
+- [`images/`](./images/): Holds the Docker and Packer image configurations.
+  - [`docker/`](./images/docker/): Custom Docker image for GitHub runners.
+  - [`packer/`](./images/packer/): Packer template for building VM images.
+- [`terraform/`](./terraform/): Terraform scripts for deploying various Azure components (resource group, vnet, subnet, runner host vm etc.)
+  - [`modules/`](./terraform/modules/): Reusable Terraform modules for Azure resources.
+  - [`scripts/`](./terraform/scripts/): Helper scripts for automation.
+- [`terraform-init/`](./terraform-init/): Terraform scripts for setting up an Azure Storage Account used as Terraform state storage
 
 <br />
 
