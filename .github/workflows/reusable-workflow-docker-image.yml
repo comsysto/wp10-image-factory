@@ -12,9 +12,6 @@ on:
       platform:
         required: true
         type: string
-      registry:
-        required: true
-        type: string
     secrets:
       ACR_USERNAME:
         required: true
