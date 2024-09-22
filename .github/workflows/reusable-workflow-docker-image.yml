@@ -12,6 +12,9 @@ on:
       platform:
         required: true
         type: string
+      registry:
+        required: true
+        type: string
 
 jobs:
   build-container-image:
@@ -20,9 +23,9 @@ jobs:
     env:
       IMAGE_NAME: ${{ inputs.image-name }}
       IMAGE_TAG: "${{ github.run_number }}"
-      REGISTRY: ${{ vars.REGISTRY }}
       DOCKER_DIR: ${{ inputs.docker-dir }}
       PLATFORM: ${{ inputs.platform }}
+      REGISTRY: ${{ inputs.registry }}
 
       AZURE_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
       AZURE_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
