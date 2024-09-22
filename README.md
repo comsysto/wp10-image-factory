@@ -76,3 +76,48 @@ Packer image and code used in this GitHub action can be found in the [`images/pa
 
 The [`docker-build-if-runner.yml`](.github/workflows/docker-build-if-runner.yml) workflow is used to build the runner container image with Docker and push it to the Azure Container Registry (ACR).  
 Docker image and all resources needed in the Docker build action can be found in the [`images/docker`](./images/docker) folder.
+
+<br />
+
+## Platform Deployment
+
+The platform deployment is managed through a `.github/workflows/terraform-deploy.yml` GitHub Actions workflow that leverages Terraform to provision and configure the necessary infrastructure on Azure.
+
+Detailed information about the Terraform configurations and scripts can be found in the following locations:
+- Terraform initialization scripts: [`terraform-init/`](./terraform-init/)
+- Main Terraform scripts: [`terraform/`](./terraform/)
+
+### Executing the Workflow
+
+To deploy the platform, ensure the necessary GitHub secrets and variables are configured as described in the Prerequisites section. The workflow requires manual execution and user inputs, which can be provided in the GitHub Actions tab.
+
+<br />
+
+## Platform Configuration
+
+Further platform configuration is done in `.github/workflows/ansible-configure-vm.yml` GitHub Actions workflow. This workflow uses Ansible to configure the deployed runner host VM.
+
+For more detailed information about the Ansible playbooks and configurations, refer to the following locations:
+- Ansible playbooks and configurations: [`ansible/`](./ansible/)
+
+### Executing the Workflow
+
+To configure the platform, ensure the necessary GitHub secrets and variables are configured as described in the Prerequisites section. The workflow can be found in the GitHub Actions tab and can be executed manually once infractructure is deployed with terraform.
+
+<br />
+
+## Image Factory Reusable Workflows
+
+This repository provides two reusable GitHub Actions workflows that customers can call from their repositories to build Docker and Packer images.
+
+### Reusable Docker Image Workflow
+
+The [`reusable-workflow-docker-image.yml`](./.github/workflows/reusable-workflow-docker-image.yml) workflow is used to build Docker images. Customers can integrate this workflow into their repositories to automate the Docker image-building process.
+
+### Reusable Packer Image Workflow
+
+The [`reusable-workflow-packer-image.yml`](./.github/workflows/reusable-workflow-packer-image.yml) workflow is used to build Packer images. Customers can use this workflow in their repositories to automate the creation of VM images with Packer.
+
+### Example User Repository
+
+An example user repository that demonstrates how to call these reusable workflows can be found [here](https://github.com/comsysto/wp10-image-factory-user).
