@@ -2,11 +2,11 @@ name: Reusable workflow - user docker pipeline
 
 on:
   workflow_dispatch:
-  push:
-    paths:
-      # - ".github/workflows/reusable-workflow-user-docker-pipeline.yml"
-      # - ".github/workflows/reusable-workflow-docker-image.yml" # remove later
-      # - "user/**"
+  # push:
+  #   paths:
+  #     - ".github/workflows/reusable-workflow-user-docker-pipeline.yml"
+  #     - ".github/workflows/reusable-workflow-docker-image.yml" # remove later
+  #     - "user/**"
 
 jobs:
   call-workflow:

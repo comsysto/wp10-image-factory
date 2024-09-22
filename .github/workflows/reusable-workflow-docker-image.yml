@@ -27,10 +27,10 @@ jobs:
       PLATFORM: ${{ inputs.platform }}
       REGISTRY: ${{ inputs.registry }}
 
-      AZURE_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
-      AZURE_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
-      AZURE_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
-      AZURE_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+      # AZURE_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+      # AZURE_CLIENT_SECRET: "${{ secrets.AZURE_CLIENT_SECRET }}"
+      # AZURE_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      # AZURE_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
 
     steps:
       - name: Checkout Repository
@@ -43,6 +43,13 @@ jobs:
             echo "Invalid environment: $PLATFORM"
             exit 1
           fi
+
+      - name: Log in to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build Container Image
         run: |
