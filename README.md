@@ -1,10 +1,9 @@
 # WP10 Image Factory
 
-## Overview
-
 The WP10 Image Factory is a self-service system designed to facilitate the creation of VM and container images. This repository serves as the primary resource for deploying the underlying infrastructure through GitHub Actions workflows that automate the deployment and configuration processes.
 
 Additionally, it provides reusable GitHub Actions workflows that users can invoke from their own repositories for image-building purposes.
+
 
 ## Repository Structure
 
@@ -17,6 +16,8 @@ Additionally, it provides reusable GitHub Actions workflows that users can invok
   - `modules/`: Reusable Terraform modules for Azure resources.
   - `scripts/`: Helper scripts for automation.
 - `terraform-init/`: Terraform scripts for setting up an Azure Storage Account used as Terraform state storage
+
+<br />
 
 ## Prerequisites
 
@@ -55,6 +56,8 @@ The following GitHub repository variables need to be configured in the repositor
 - `GH_OWNER`: GitHub owner (user or organization) where Image Factory runners will be connected to.
 - `GH_REPO`: GitHub repository name where Image Factory runners will be connected to.
 - `VM_ENV`: Environment setting for the runner host VM. Valid values are `"development"` and `"air-gapped"`.
+
+<br />
 
 ## Building Platform Images with GitHub Actions
 
