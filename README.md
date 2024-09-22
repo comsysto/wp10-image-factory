@@ -4,6 +4,23 @@ The WP10 Image Factory is a self-service system designed to facilitate the creat
 
 Additionally, it provides reusable GitHub Actions workflows that users can invoke from their own repositories for image-building purposes.
 
+## Table of Contents
+- [WP10 Image Factory](#wp10-image-factory)
+  - [Table of Contents](#table-of-contents)
+  - [Repository Structure](#repository-structure)
+  - [Prerequisites](#prerequisites)
+    - [Repository Secrets and variables](#repository-secrets-and-variables)
+  - [Building Platform Images](#building-platform-images)
+    - [Building Runner Host Image](#building-runner-host-image)
+    - [Building Runner Container Image](#building-runner-container-image)
+  - [Platform Deployment](#platform-deployment)
+    - [Executing the Workflow](#executing-the-workflow)
+  - [Platform Configuration](#platform-configuration)
+    - [Executing the Workflow](#executing-the-workflow-1)
+  - [Image Factory Reusable Workflows](#image-factory-reusable-workflows)
+    - [Reusable Docker Image Workflow](#reusable-docker-image-workflow)
+    - [Reusable Packer Image Workflow](#reusable-packer-image-workflow)
+    - [Example User Repository](#example-user-repository)
 
 ## Repository Structure
 
