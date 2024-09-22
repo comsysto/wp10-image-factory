@@ -59,9 +59,9 @@ The following GitHub repository variables need to be configured in the repositor
 
 <br />
 
-## Building Platform Images with GitHub Actions
+## Building Platform Images
 
-The following images are used in the main platform deployment:
+Platform Images are built using GitHub Actions workflows. The following images are used in the main platform deployment:
 - Runner Host Image (virtual machine)
 - Runner (container)
 
