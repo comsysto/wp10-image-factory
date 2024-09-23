@@ -68,7 +68,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
           GITHUB_OWNER: ${{ vars.GH_OWNER }}
         run: |
-          source scripts/helper.sh
 
           az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID 
           az account set --subscription $ARM_SUBSCRIPTION_ID
