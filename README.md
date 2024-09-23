@@ -139,6 +139,8 @@ The [`reusable-workflow-packer-image.yml`](./.github/workflows/reusable-workflow
 
 An example user repository that demonstrates how to call these reusable workflows can be found [here](https://github.com/comsysto/wp10-image-factory-user-1).
 
+<br />
+
 ## GitHub Action Runners
 
 ### Multi-target architecture
