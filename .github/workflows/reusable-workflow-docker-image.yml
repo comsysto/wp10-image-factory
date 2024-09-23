@@ -12,17 +12,24 @@ on:
       platform:
         required: true
         type: string
+    secrets:
+      ACR_USERNAME:
+        required: true
+      ACR_PASSWORD:
+        required: true
+      REGISTRY:
+        required: true
 
 jobs:
   build-container-image:
     runs-on: self-hosted
 
     env:
+      REGISTRY: ${{ secrets.REGISTRY }}
+      PLATFORM: ${{ inputs.platform }}
       IMAGE_NAME: ${{ inputs.image-name }}
       IMAGE_TAG: "${{ github.run_number }}"
-      REGISTRY: ${{ secrets.REGISTRY }}
       DOCKER_DIR: ${{ inputs.docker-dir }}
-      PLATFORM: ${{ inputs.platform }}
 
     steps:
       - name: Checkout Repository
@@ -36,6 +43,13 @@ jobs:
             exit 1
           fi
 
+      - name: Log in to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
       - name: Build Container Image
         run: |
           echo "Building image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
@@ -46,32 +60,26 @@ jobs:
           echo "Pushing image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
           podman push $REGISTRY/$IMAGE_NAME:$IMAGE_TAG      
 
-      - name: Check image with Trivy
-        shell: bash
+      - name: Tag and push Docker image as latest
+        # if: github.ref == 'refs/heads/main' # TODO: uncomment once we are done with development
+        run: |
+          echo "Pushing image: $REGISTRY/$IMAGE_NAME:$IMAGE_TAG with as latest"
+          podman tag $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $REGISTRY/$IMAGE_NAME:latest
+          podman push $REGISTRY/$IMAGE_NAME:latest
+  
+      - name: Scan image for vulnerabilites
         run: |
           mkdir build-artifacts
-          echo "=======> Print image for trivy scan:"
-          echo "$REGISTRY/$IMAGE_NAME:$IMAGE_TAG"
-          echo ""=======> Print available images:"
-          podman image ls
-          echo ""=======> Scan image with trivy:"
-          trivy image wp10tfdevacr.azurecr.io/$IMAGE_NAME:$IMAGE_TAG >> build-artifacts/vuln-scan.txt
-          
-          # cat build-artifacts/vuln-scan.txt
-          # trivy image --format spdx ubuntu:rolling >> build-artifacts/sbom-spdx.txt
-          # trivy image --format cyclonedx ubuntu:rolling >> build-artifacts/sbom-cyclonedx.txt
+          trivy image $REGISTRY/$IMAGE_NAME:$IMAGE_TAG > build-artifacts/vuln-scan.txt
+
+      - name: Generate SBOM
+        run: |
+          trivy image --format spdx $REGISTRY/$IMAGE_NAME:$IMAGE_TAG > build-artifacts/sbom-spdx.txt
+          trivy image --format cyclonedx $REGISTRY/$IMAGE_NAME:$IMAGE_TAG > build-artifacts/sbom-cyclonedx.txt
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
+          name: image-scan-results
           path: build-artifacts/*
-
-      - name: Tag and push Docker image as latest
-        # if: github.ref == 'refs/heads/main' # TODO: uncomment once we are done with development
-        run: |
-          podman tag $REGISTRY/$IMAGE_NAME:$IMAGE_TAG $REGISTRY/$IMAGE_NAME:latest
-          podman push $REGISTRY/$IMAGE_NAME:latest
-
-
 

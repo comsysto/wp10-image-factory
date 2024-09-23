@@ -1,0 +1,93 @@
+name: Reusable workflow - build packer VM
+
+on:
+  workflow_call:
+    inputs:
+      image-name:
+        required: true
+        type: string
+        
+jobs:
+  packer-build:
+    runs-on: self-hosted
+
+    env:
+      AZ_CLI_VERSION: 2.64.0
+      PACKER_VERSION: 1.9.4
+
+      # AZURE_LOCATION: ${{ vars.AZURE_LOCATION }}
+      # AZURE_RESOURCE_GROUP:  ${{ vars.AZURE_RESOURCE_GROUP }}
+      # AZURE_ACG:  ${{ vars.AZURE_ACG }}
+      # AZURE_CREDENTIALS: |
+      #   {
+      #     "clientId": "${{ secrets.AZURE_CLIENT_ID }}",
+      #     "clientSecret": "${{ secrets.AZURE_CLIENT_SECRET }}",
+      #     "subscriptionId": "${{ secrets.AZURE_SUBSCRIPTION_ID }}",
+      #     "tenantId": "${{ secrets.AZURE_TENANT_ID }}"
+      #   }
+
+      # IMAGE_PUBLISHER: "wp10-image-factory"
+      # IMAGE_OFFER: "wp10-image-factory-vm"
+      # IMAGE_SKU: "v1"
+      # IMAGE_OS_TYPE: "linux"
+      # IMAGE_VERSION: "${{ github.run_number }}"
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # - name: Azure Login
+      #   uses: azure/login@v2
+      #   with:
+      #     creds: ${{ env.AZURE_CREDENTIALS }}
+
+      # - name: Create Azure Image Definition
+      #   uses: azure/cli@v2
+      #   with:
+      #     azcliversion: ${{ env.AZ_CLI_VERSION }}
+      #     inlineScript: |
+      #       set +e
+      #       az sig image-definition show \
+      #         --resource-group "$AZURE_RESOURCE_GROUP" \
+      #         --gallery-name "$AZURE_ACG" \
+      #         --gallery-image-definition "{{ inputs.image-name }}" \
+      #         --query "name" -o tsv
+      #       az_exit_code=$?
+      #       set -e
+      #       if [ $az_exit_code -eq 3 ]; then
+      #         echo "Image definition does not exist. Creating it..."
+      #         az sig image-definition create \
+      #           --resource-group "$AZURE_RESOURCE_GROUP" \
+      #           --gallery-name "$AZURE_ACG" \
+      #           --gallery-image-definition "{{ inputs.image-name }} \
+      #           --publisher "$IMAGE_PUBLISHER" \
+      #           --offer "$IMAGE_OFFER" \
+      #           --sku "$IMAGE_SKU" \
+      #           --os-type "$IMAGE_OS_TYPE"
+      #       else
+      #         echo "Image definition '{{ inputs.image-name }}' already exists."
+      #       fi
+
+      # - name: Template Packer vars file
+      #   uses: cuchi/jinja2-action@v1.2.2
+      #   with:
+      #     template: images/packer/image-factory-vm/values.auto.pkrvars.hcl.j2
+      #     output_file: images/packer/image-factory-vm/values.auto.pkrvars.hcl
+
+      # - name: Setup Packer
+      #   uses: hashicorp/setup-packer@main
+      #   with:
+      #     version: ${{ env.PACKER_VERSION }}
+      
+      # - name: Packer Init
+      #   run: packer init images/packer/image-factory-vm
+
+      # - name: Packer Build
+      #   run: |
+      #     packer build \
+      #       -var "client_id=${{ secrets.AZURE_CLIENT_ID }}" \
+      #       -var "client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" \
+      #       -var "tenant_id=${{ secrets.AZURE_TENANT_ID }}" \
+      #       -var "subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+      #       images/packer/image-factory-vm
+
