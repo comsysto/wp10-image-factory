@@ -89,7 +89,7 @@ jobs:
           cd ansible
           eval "$(ssh-agent -s)"
           ssh-add ansible_ssh_key
-          ssh_command="ssh -o StrictHostKeyChecking=no azureadmin@${JUMPHOST_IP} 'ssh -o StrictHostKeyChecking=no azureadmin@${RUNNER_HOST_IP} whoami'"
+          ssh_command="ssh -A -o StrictHostKeyChecking=no azureadmin@${JUMPHOST_IP} 'ssh -o StrictHostKeyChecking=no azureadmin@${RUNNER_HOST_IP} whoami'"
           [ "$VM_ENV" = "air-gapped" ] && eval $ssh_command
           ansible-playbook configure-image-factory-vm.yml
         # -> TODO: remove condition [ "$VM_ENV" = "air-gapped" ] when devel env is no longer needed
