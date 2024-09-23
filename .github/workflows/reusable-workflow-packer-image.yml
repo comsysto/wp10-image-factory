@@ -76,7 +76,9 @@ jobs:
           fi
 
       - name: Packer Init
-        run: ls -lha images/packer/user-packer
+        run: |
+          packer --version
+          ls -lha images/packer/user-packer
 
       # - name: Packer Init
       #   run: packer init images/packer/user-packer
