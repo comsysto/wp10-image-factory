@@ -51,9 +51,8 @@ jobs:
 
       - name: Checkout User Repository
         uses: actions/checkout@v4
-        # with:
-        #   repository: comsysto/wp10-image-factory-user
-        #   ref: feature/user-workflow-packer
+        with:
+          path: user-repo
 
       - name: Azure Login
         uses: azure/login@v2
@@ -86,6 +85,7 @@ jobs:
 
       - name: Packer Init
         run: |
+          cp user-repo/packer/example-linux/user-setup-vm.sh images/packer/user-packer/scripts/setup-vm.sh
           ls -lha images/packer/user-packer
           packer init images/packer/user-packer
 
