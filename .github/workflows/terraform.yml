@@ -95,7 +95,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
           GITHUB_OWNER: ${{ vars.GH_OWNER }}
         run: |
-          if [["${{ github.event.inputs.module }}" == "all"]]; then
+          if [[ "${{ github.event.inputs.module }}" == "all" ]]; then
             terraform plan -out.main.tfplan
           else
             terraform plan -target=module.${{ github.event.inputs.module }} -out main.tfplan
