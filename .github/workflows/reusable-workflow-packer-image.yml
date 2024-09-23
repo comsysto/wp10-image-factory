@@ -86,7 +86,7 @@ jobs:
 
       - name: Packer Init
         run: |
-          ls -lha user-repo/packer
+          ls -lha user-repo/packer/example-linux
           cp user-repo/packer/example-linux/user-setup-vm.sh images/packer/user-packer/scripts/setup-vm.sh
           ls -lha images/packer/user-packer
           packer init images/packer/user-packer
