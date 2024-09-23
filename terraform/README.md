@@ -1,3 +1,7 @@
+# terraform
+
+Main terraform code for deploying an the Image Factory platform. For usage, refer to the [documentation](../docs/README-terraform.md)
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
