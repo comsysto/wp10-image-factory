@@ -73,8 +73,8 @@ resource "azurerm_route_table" "rt" {
   }
   route {
     name                   = "${var.prefix}-acrRoute"
-    address_prefix         = "10.0.2.0/24"
-    next_hop_type          = "VNetLocal"
+    address_prefix         = "10.0.0.0/24"
+    next_hop_type          = "VnetLocal"
   }
 }
 
