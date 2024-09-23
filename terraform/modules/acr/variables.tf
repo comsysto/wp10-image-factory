@@ -21,3 +21,15 @@ variable "subnet_id" {
   type        = string
   description = "Id of the subnet."
 }
+
+variable "env_tag" {
+  type        = string
+  default     = "dev"
+  description = "Environment tag applied to all created resources."
+}
+
+variable "project_tag" {
+  type        = string
+  default     = "wp10"
+  description = "Project tag applied to all created resources."
+}

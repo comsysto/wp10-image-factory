@@ -1,6 +1,11 @@
 resource "azurerm_resource_group" "state_rg" {
   location = var.resource_group_location
   name     = "${var.prefix}-state-rg"
+
+  tags = {
+    environment = var.state_env_tag
+    project = var.state_project_tag
+  }
 }
 
 resource "azurerm_storage_account" "tfstate" {
@@ -12,7 +17,8 @@ resource "azurerm_storage_account" "tfstate" {
   allow_nested_items_to_be_public = false
 
   tags = {
-    environment = "staging"
+    environment = var.state_env_tag
+    project = var.state_project_tag
   }
 }
 

@@ -45,3 +45,15 @@ variable "runner_image_id" {
   type        = string
   description = "Shared Image Gallery ID of the runner VM image."
 }
+
+variable "env_tag" {
+  type        = string
+  default     = "dev"
+  description = "Environment tag applied to all created resources "
+}
+
+variable "project_tag" {
+  type        = string
+  default     = "wp10"
+  description = "Project tag applied to all created resources"
+}
