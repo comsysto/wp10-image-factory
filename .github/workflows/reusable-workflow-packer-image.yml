@@ -27,7 +27,7 @@ jobs:
         }
 
       IMAGE_NAME: ${{ inputs.image-name }}
-      IMAGE_PUBLISHER: "wp10-image-factory"
+      IMAGE_PUBLISHER: "wp10-image-factory-user"
       IMAGE_OFFER: "wp10-user-packer"
       IMAGE_SKU: "v1"
       IMAGE_OS_TYPE: "linux"
@@ -68,17 +68,6 @@ jobs:
             else
               echo "Image definition '$IMAGE_NAME' already exists."
             fi
-
-      - name: Template Packer vars file
-        uses: cuchi/jinja2-action@v1.2.2
-        with:
-          template: images/packer/user-packer/values.auto.pkrvars.hcl.j2
-          output_file: images/packer/user-packer/values.auto.pkrvars.hcl
-
-      # - name: Setup Packer
-      #   uses: hashicorp/setup-packer@main
-      #   with:
-      #     version: ${{ env.PACKER_VERSION }}
       
       - name: Packer Init
         run: packer init images/packer/user-packer
@@ -90,5 +79,9 @@ jobs:
             -var "client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" \
             -var "tenant_id=${{ secrets.AZURE_TENANT_ID }}" \
             -var "subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+            -var "gallery_image_name=${{ env.IMAGE_NAME }}" \
+            -var "resource_group=${{ env.AZURE_RESOURCE_GROUP }}" \
+            -var "gallery_name=${{ env.AZURE_ACG }}" \
+            -var "gallery_image_version=${{ env.IMAGE_VERSION }}" \
+            -var "location=${{ env.AZURE_LOCATION }}" \
             images/packer/user-packer
-
