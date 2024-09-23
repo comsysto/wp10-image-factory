@@ -34,7 +34,7 @@ No resources.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_resource_group_name"></a> [resource\_group\_name](#output\_resource\_group\_name) | n/a |
-| <a name="output_state_container_name"></a> [state\_container\_name](#output\_state\_container\_name) | n/a |
-| <a name="output_state_storage_account_name"></a> [state\_storage\_account\_name](#output\_state\_storage\_account\_name) | n/a |
+| <a name="output_resource_group_name"></a> [resource\_group\_name](#output\_resource\_group\_name) | Name of the created resource group. Value needed for config.azurerm.tfbackend. |
+| <a name="output_state_container_name"></a> [state\_container\_name](#output\_state\_container\_name) | Name of the storage account container used for the terraform state. Value needed for config.azurerm.tfbackend. |
+| <a name="output_state_storage_account_name"></a> [state\_storage\_account\_name](#output\_state\_storage\_account\_name) | Name of the storage account used for terraform state backend. Value needed for config.azurerm.tfbackend. |
 <!-- END_TF_DOCS -->

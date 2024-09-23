@@ -14,22 +14,20 @@ variable "prefix" {
 }
 
 variable "virtual_network" {
-  description = "Virtual network output."
+  description = "Virtual network for the private DNS zone."
 }
 
 variable "subnet_id" {
   type        = string
-  description = "Id of the subnet."
+  description = "Id of the subnet where the private endpoint should be created."
 }
 
 variable "env_tag" {
   type        = string
-  default     = "dev"
   description = "Environment tag applied to all created resources."
 }
 
 variable "project_tag" {
   type        = string
-  default     = "wp10"
   description = "Project tag applied to all created resources."
 }
