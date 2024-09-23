@@ -57,6 +57,18 @@ jobs:
         with:
           terraform_version: 1.9.5
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' 
+          working-directory: ${{ github.event.inputs.directory }}
+      - name: Setup Python
+        run: |
+          python -m venv venv
+          ls -lah venv/bin
+          source venv/bin/activate
+          pip install -r requirements.txt
+        working-directory: ${{ github.event.inputs.directory }}
+
       - name: 'Terraform Init'
         if: github.event.inputs.directory != ''
         working-directory: ${{ github.event.inputs.directory }}
@@ -100,19 +112,6 @@ jobs:
           else
             terraform plan -target=module.${{ github.event.inputs.module }} -out main.tfplan
           fi
-
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12' 
-          working-directory: ${{ github.event.inputs.directory }}
-      - name: Setup Python
-        run: |
-          python -m venv venv
-          ls -lah venv/bin
-          source venv/bin/activate
-          pip install -r requirements.txt
-        working-directory: ${{ github.event.inputs.directory }}
 
       - name: 'Terraform apply'
         if: |
