@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 
 ARG RUNNER_VERSION=2.319.1
-ARG RUNNER_ARCH=amd64
+ARG RUNNER_ARCH=x64
 
 ENV DEBIAN_FRONTEND=noninteractive \
     USER_NAME=gha \
@@ -75,7 +75,7 @@ RUN chmod +x start-github-runner.sh
 
 # Install Packer, Azure CLI, and Trivy
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && \
-    apt-add-repository "deb [arch=${RUNNER_ARCH}] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && \
+    apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && \
     apt-get update -y && \
     apt-get install -y packer && \
     curl -sL https://aka.ms/InstallAzureCLIDeb | bash && \
