@@ -4,6 +4,11 @@ resource "azurerm_public_ip" "development_public_ip" {
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
+  }
 }
 
 # Create network interface
@@ -17,6 +22,11 @@ resource "azurerm_network_interface" "jumphost_nic" {
     subnet_id                     = var.public_subnet_id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.development_public_ip.id
+  }
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
   }
 }
 
@@ -50,5 +60,10 @@ resource "azurerm_linux_virtual_machine" "jumphost" {
 
   boot_diagnostics {
     storage_account_uri = azurerm_storage_account.boot_diagnostics_storage_account.primary_blob_endpoint
+  }
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
   }
 }

@@ -9,6 +9,11 @@ resource "azurerm_network_interface" "runner_nic" {
     subnet_id                     = var.private_subnet_id
     private_ip_address_allocation = "Dynamic"
   }
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
+  }
 }
 
 # Create virtual machine
@@ -37,6 +42,11 @@ resource "azurerm_linux_virtual_machine" "runner" {
   boot_diagnostics {
     storage_account_uri = azurerm_storage_account.boot_diagnostics_storage_account.primary_blob_endpoint
   }
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
+  }
 }
 
 # Create storage account for boot diagnostics
@@ -46,6 +56,11 @@ resource "azurerm_storage_account" "boot_diagnostics_storage_account" {
   resource_group_name      = var.resource_group_name
   account_tier             = "Standard"
   account_replication_type = "LRS"
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
+  }
 }
 
 resource "random_id" "random_id" {
@@ -73,6 +88,11 @@ resource "azurerm_network_security_group" "ssh_nsg" {
     destination_port_range     = "22"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
+  }
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
   }
 }
 

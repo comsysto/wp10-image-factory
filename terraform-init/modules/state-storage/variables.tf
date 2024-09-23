@@ -1,9 +1,19 @@
 variable "prefix" {
   type        = string
-  description = "Prefix of the resource name"
+  description = "Prefix of the resource name."
 }
 
 variable "resource_group_location" {
   type        = string
   description = "Location of the resource group."
+}
+
+variable "state_env_tag" {
+  type        = string
+  description = "Environment tag applied to all created resources."
+}
+
+variable "state_project_tag" {
+  type        = string
+  description = "Project tag applied to all created resources."
 }

@@ -11,6 +11,11 @@ resource "azurerm_public_ip" "pip_azfw" {
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
   sku                 = "Standard"
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
+  }
 }
 
 resource "azurerm_firewall" "fw" {
@@ -25,6 +30,11 @@ resource "azurerm_firewall" "fw" {
     public_ip_address_id = azurerm_public_ip.pip_azfw.id
   }
   firewall_policy_id = azurerm_firewall_policy.azfw_policy.id
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
+  }
 }
 
 resource "azurerm_firewall_policy" "azfw_policy" {
@@ -33,6 +43,11 @@ resource "azurerm_firewall_policy" "azfw_policy" {
   location                 = var.resource_group_location
   sku                      = var.firewall_sku_tier
   threat_intelligence_mode = "Alert"
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
+  }
 }
 
 
@@ -70,6 +85,16 @@ resource "azurerm_route_table" "rt" {
     address_prefix         = "0.0.0.0/0"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = azurerm_firewall.fw.ip_configuration[0].private_ip_address
+  }
+  route {
+    name           = "${var.prefix}-acrRoute"
+    address_prefix = "10.0.2.0/24"
+    next_hop_type  = "VnetLocal"
+  }
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
   }
 }
 

@@ -4,12 +4,22 @@ resource "azurerm_container_registry" "acr" {
   location            = var.resource_group_location
   sku                 = "Premium"
   admin_enabled       = true
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
+  }
 }
 
 # Private DNS Zone for ACR
 resource "azurerm_private_dns_zone" "acr_private_dns" {
   name                = "privatelink.azurecr.io"
   resource_group_name = var.resource_group_name
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
+  }
 }
 # TODO
 #name = "{regionName}.data.privatelink.azurecr.io"  
@@ -20,6 +30,11 @@ resource "azurerm_private_dns_zone_virtual_network_link" "acr_vnet_link" {
   resource_group_name   = var.resource_group_name
   private_dns_zone_name = azurerm_private_dns_zone.acr_private_dns.name
   virtual_network_id    = var.virtual_network.id
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
+  }
 }
 
 # Private Endpoints for ACR
@@ -35,6 +50,11 @@ resource "azurerm_private_endpoint" "acr_private_endpoint" {
     subresource_names              = ["registry"]
     is_manual_connection           = false
   }
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
+  }
 }
 
 # Private DNS A Record for ACR
@@ -44,6 +64,11 @@ resource "azurerm_private_dns_a_record" "acr_a_record" {
   resource_group_name = var.resource_group_name
   ttl                 = 300
   records             = [azurerm_private_endpoint.acr_private_endpoint.private_service_connection[0].private_ip_address]
+
+  tags = {
+    environment = var.env_tag
+    project     = var.project_tag
+  }
 }
 
 
