@@ -57,6 +57,16 @@ jobs:
         with:
           terraform_version: 1.9.5
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' 
+          working-directory: ${{ github.event.inputs.directory }}
+      - run: |
+          python -m venv venv
+          source venv/Scripts/activate
+          pip install -r requirements.txt
+        working-directory: ${{ github.event.inputs.directory }}
+
       - name: 'Terraform Init'
         if: github.event.inputs.directory != ''
         working-directory: ${{ github.event.inputs.directory }}
