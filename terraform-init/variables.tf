@@ -5,7 +5,7 @@ variable "state_rg_location" {
 
 variable "prefix" {
   type        = string
-  default     = "wp10"
+  default     = "wp10dev2"
   description = "Prefix of the resource name"
 }
 

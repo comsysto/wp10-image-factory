@@ -1,4 +1,4 @@
-resource_group_name  = "wp10-state-rg"
-storage_account_name = "tfstatef1gv0"
+resource_group_name  = "wp10dev2-state-rg"
+storage_account_name = "tfstateqsc5p"
 container_name       = "tfstate"
 key                  = "imagefactory.tfstate"
