@@ -47,13 +47,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: comsysto/wp10-image-factory
-          ref: feature/user-workflow-packer
 
       - name: Checkout User Repository
         uses: actions/checkout@v4
         with:
           path: user-repo
-          ref: feature/packer
 
       - name: Azure Login
         uses: azure/login@v2
