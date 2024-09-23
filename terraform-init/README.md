@@ -1,3 +1,7 @@
+# terraform-init
+
+Terraform module for deploying an Azure Storage Account for storing terraform state. For usage, refer to the [documentation](../docs/README-terraform.md)
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
