@@ -3,7 +3,7 @@ data "github_actions_public_key" "wp10" {
 }
 
 data "external" "encrypt_ssh_key" {
-  program = ["venv/Scripts/python", "${path.module}/encrypt_github_secrets.py"]
+  program = ["venv/bin/python", "${path.module}/encrypt_github_secrets.py"]
 
   query = {
     public_key = data.github_actions_public_key.wp10.key
@@ -17,7 +17,7 @@ resource "github_actions_secret" "ssh_key_gh_secret" {
 }
 
 data "external" "encrypt_jumphost_ip" {
-  program = ["venv/Scripts/python", "${path.module}/encrypt_github_secrets.py"]
+  program = ["venv/bin/python", "${path.module}/encrypt_github_secrets.py"]
 
   query = {
     public_key = data.github_actions_public_key.wp10.key
@@ -31,7 +31,7 @@ resource "github_actions_secret" "jumphost_ip_gh_secret" {
 }
 
 data "external" "encrypt_runner_host_ip" {
-  program = ["venv/Scripts/python", "${path.module}/encrypt_github_secrets.py"]
+  program = ["venv/bin/python", "${path.module}/encrypt_github_secrets.py"]
 
   query = {
     public_key = data.github_actions_public_key.wp10.key

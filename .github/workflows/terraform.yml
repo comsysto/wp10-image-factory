@@ -57,6 +57,18 @@ jobs:
         with:
           terraform_version: 1.9.5
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' 
+          working-directory: ${{ github.event.inputs.directory }}
+      - name: Setup Python
+        run: |
+          python -m venv venv
+          ls -lah venv/bin
+          source venv/bin/activate
+          pip install -r requirements.txt
+        working-directory: ${{ github.event.inputs.directory }}
+
       - name: 'Terraform Init'
         if: github.event.inputs.directory != ''
         working-directory: ${{ github.event.inputs.directory }}
@@ -68,8 +80,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
           GITHUB_OWNER: ${{ vars.GH_OWNER }}
         run: |
-          source scripts/helper.sh
-
           az login --service-principal -u $ARM_CLIENT_ID -p $ARM_CLIENT_SECRET --tenant $ARM_TENANT_ID 
           az account set --subscription $ARM_SUBSCRIPTION_ID
 
@@ -96,8 +106,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
           GITHUB_OWNER: ${{ vars.GH_OWNER }}
         run: |
-          if [${{ github.event.inputs.module }} == "all"]; then
-            terraform plan -out.main.tfplan
+          if [[ "${{ github.event.inputs.module }}" == "all" ]]; then
+            terraform plan -out main.tfplan
           else
             terraform plan -target=module.${{ github.event.inputs.module }} -out main.tfplan
           fi

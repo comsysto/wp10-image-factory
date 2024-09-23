@@ -37,7 +37,7 @@ module "acr" {
 module "acg" {
   source = "./modules/acg"
 
-  prefix                  = local.prefix
+  prefix                  = local.acr_prefix
   resource_group_location = var.resource_group_location
   resource_group_name     = module.network.resource_group.name
   subnet_id               = module.network.private_subnet.id
