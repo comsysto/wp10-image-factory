@@ -1,25 +1,33 @@
-# packer
+# Packer
 
-This directory contains 2 repositories:
+This project contains two main directories:
 
-- image-factory-vm
-- user-packer
+1. `image-factory-vm`
+2. `user-packer`
 
-Both directories are used to build VM images with Packer and store them in Azure Shared Image Gallery however there is difference in when one is used:
+Both directories are used to build VM images with Packer and store them in the Azure Shared Image Gallery. However, they are used in different contexts.
 
-## image-factory-vm
+## Image Factory VM
 
-This directory contains Packer scripts to build Image Factory VM which will host GitHub Actions runner.
+This directory includes Packer scripts to build the Image Factory VM, which hosts a GitHub Actions runner.
 
-Produced VM image version is then used by Terraform module during deployment:
+### VM Configuration Script
 
-- runner
+The Image Factory VM is configured using a shell script that performs the following tasks:
 
-To trigger image rebuild following GitHub Actions Workflow needs to be executed:
+- Sets the DEBIAN_FRONTEND to noninteractive to avoid user prompts during the package installation process.
+- Updates and upgrades the system packages.
+- Installs necessary packages such as `apt-transport-https`, `buildah`, `ca-certificates`, `curl`, `git`, `gnupg`, `jq`, `libcap2-bin`, `lsb-release`, `podman`, `slirp4netns`, `software-properties-common`, `unzip`, `vim`, and `wget`.
+- Performs a clean-up of the package lists.
+- Installs the Azure CLI.
 
-- Build Image Factory VM
+### Triggering an Image Rebuild
 
-## user-packer
+To trigger a rebuild of the Image Factory VM, execute the following GitHub Actions Workflow: [.github/workflows/packer-build-if-vm.yml](.github/workflows/packer-build-if-vm.yml)
 
-This directory contains Packer scripts to build user VM images produced by Image Factory.
-These scripts are used whenever user calls reusable workflow: "Reusable workflow - build packer VM"
+## User Packer Template
+
+The `user-packer` directory contains Packer scripts to build user VM images. These images are produced by the Image Factory VM.
+These scripts come into play whenever a user calls the reusable workflow: [.github/workflows/packer-build-if-vm.yml](.github/workflows/packer-build-if-vm.yml)
+
+By following these guidelines, you can efficiently build and deploy VM images using Packer and GitHub Actions.
