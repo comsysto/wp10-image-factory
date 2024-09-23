@@ -135,7 +135,7 @@ The [`reusable-workflow-docker-image.yml`](./.github/workflows/reusable-workflow
 
 The [`reusable-workflow-packer-image.yml`](./.github/workflows/reusable-workflow-packer-image.yml) workflow is used to build Packer images. Customers can use this workflow in their repositories to automate the creation of VM images with Packer.
 
-> **Important Note:**  
+> **Important!**  
 > The Packer configuration is currently utilizing the same resource group as the base platform deployment. In the final implementation, a new resource group will be created specifically for this purpose.
 
 ### Example User Repository
