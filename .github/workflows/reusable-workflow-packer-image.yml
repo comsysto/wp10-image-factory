@@ -45,6 +45,9 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          repository: comsysto/wp10-image-factory
+          ref: feature/user-workflow-packer
 
       - name: Azure Login
         uses: azure/login@v2
