@@ -13,6 +13,7 @@ RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install --no-install-recommends -y \
     apt-transport-https \
+    binfmt-support \
     buildah \
     ca-certificates \
     curl \
@@ -22,29 +23,36 @@ RUN apt-get update -y && \
     libcap2-bin \
     lsb-release \
     podman \
+    qemu \
+    qemu-user-static \
     slirp4netns \
     software-properties-common \
+    sudo \
     unzip \
     vim \
     wget && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# # Create runner user
+# RUN mkdir -p ${USER_HOME} && \
+#     useradd -r -d ${USER_HOME} -s /sbin/nologin -c "GitHub Actions User" ${USER_NAME}
 
-# Create runner user
-RUN mkdir -p ${USER_HOME} && \
-    useradd -r -d ${USER_HOME} -s /sbin/nologin -c "GitHub Actions User" ${USER_NAME} && \ 
-    chown ${USER_GROUP}:${USER_NAME} ${USER_HOME}
+# # Add podman configuration file(s) and permissions
+# ADD files/containers.conf ${USER_HOME}/.config/containers/containers.conf
+# ADD files/registries.conf ${USER_HOME}/.config/containers/registries.conf
+# RUN mkdir -p ${USER_HOME}/.local/share/containers && \
+#     chown -R ${USER_GROUP}:${USER_NAME} ${USER_HOME}
 
-# Add podman configuration file(s) 
-ADD files/containers.conf /etc/containers/containers.conf
-RUN chmod 644 /etc/containers/containers.conf
+# Create runner user and necessary directories
+RUN groupadd -r ${USER_GROUP} && \
+    useradd -r -d ${USER_HOME} -s /sbin/nologin -g ${USER_GROUP} -c "GitHub Actions User" ${USER_NAME} && \
+    mkdir -p ${USER_HOME}/.config/containers && \
+    chown -R ${USER_NAME}:${USER_GROUP} ${USER_HOME}
 
 # Setup for rootless podman
-RUN usermod --add-subuids 100000-165535 --add-subgids 100000-165535 ${USER_NAME}
-
-# Enable rootless podman to setup namespace using newuidmap
-# - referrence: https://github.com/containers/podman/issues/2788#issuecomment-1016301663
-RUN chmod u-s /usr/bin/newuidmap /usr/bin/newgidmap && \
+# referrence: https://github.com/containers/podman/issues/2788#issuecomment-1016301663
+RUN usermod --add-subuids 100000-165535 --add-subgids 100000-165535 ${USER_NAME} && \
+    chmod u-s /usr/bin/newuidmap /usr/bin/newgidmap && \
     setcap cap_setuid+eip /usr/bin/newuidmap && \
     setcap cap_setgid+eip /usr/bin/newgidmap 
 
@@ -62,23 +70,23 @@ RUN mkdir actions-runner && \
 RUN actions-runner/bin/installdependencies.sh
 
 # Add start script and make it executable
-ADD scripts/start-github-runner.sh start-github-runner.sh
+COPY scripts/start-github-runner.sh ${USER_HOME}/start-github-runner.sh
 RUN chmod +x start-github-runner.sh
 
-# Install packer
+# Install Packer, Azure CLI, and Trivy
 RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add - && \
     apt-add-repository "deb [arch=${RUNNER_ARCH}] https://apt.releases.hashicorp.com $(lsb_release -cs) main" && \
     apt-get update -y && \
-    apt-get install packer
-
-# Install Azure CLI
-RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
-
-# Install Trivy
-RUN wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add - && \
-    echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | tee -a /etc/apt/sources.list.d/trivy.list && \
+    apt-get install -y packer && \
+    curl -sL https://aka.ms/InstallAzureCLIDeb | bash && \
+    wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add - && \
+    echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | tee /etc/apt/sources.list.d/trivy.list && \
     apt-get update && \
-    apt-get install trivy
+    apt-get install -y trivy && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Update sudoers file to enable PAT token removal on runner startup
+COPY files/gha /etc/sudoers.d/gha
 
 # Set runner user
 USER ${USER_NAME}

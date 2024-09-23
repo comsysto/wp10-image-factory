@@ -1,0 +1,95 @@
+name: Configure Image Factory VM
+
+on:
+  push:
+    paths:
+      - ".github/workflows/ansible-configure-if-vm.yml"
+      - "ansible/**"
+  workflow_dispatch:
+
+jobs:
+
+  configure-vm:
+    runs-on: ubuntu-latest
+
+    env:
+      # Tell GitHub which VM host to use (air-gapped or development) -> TODO: remove when devel env is no longer needed
+      VM_ENV: ${{ vars.VM_ENV }}
+
+      SSH_KEY: ${{ secrets.SSH_KEY }}
+      JUMPHOST_IP: ${{ secrets.JUMPHOST_IP }}
+      RUNNER_HOST_IP: ${{ secrets.RUNNER_HOST_IP }}
+
+      REGISTRY: ${{ secrets.REGISTRY }} 
+      ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+
+      GH_PAT_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+      GH_OWNER: ${{ vars.GH_OWNER }}
+      GH_REPO: ${{ vars.GH_REPO }}
+      ACR_RUNNER_IMAGE_NAME: ${{ vars.ACR_RUNNER_IMAGE_NAME }}
+
+      ANSIBLE_VERSION: 2.17.4
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+
+      # Development environment - VM host with internet access -> TODO: remove when devel env is no longer needed
+      - name: Template Ansible SSH key file for development environment
+        uses: cuchi/jinja2-action@v1.2.2
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY_DEVEL }}
+        if: env.VM_ENV == 'development'
+        with:
+          template: ansible/templates/ansible_ssh_key.j2
+          output_file: ansible/ansible_ssh_key
+
+      - name: Template Ansible inventory for development environment
+        uses: cuchi/jinja2-action@v1.2.2
+        env:
+          RUNNER_HOST_IP: ${{ secrets.RUNNER_HOST_IP_DEVEL }}
+        if: env.VM_ENV == 'development'
+        with:
+          template: ansible/templates/inventory-devel.ini.j2
+          output_file: ansible/inventory.ini
+
+
+      # Air-gapped environment - VM host without internet access
+      - name: Template Ansible SSH key file for air-gapped environment
+        uses: cuchi/jinja2-action@v1.2.2
+        if: env.VM_ENV == 'air-gapped' # -> TODO: remove condition when devel env is no longer needed
+        with:
+          template: ansible/templates/ansible_ssh_key.j2
+          output_file: ansible/ansible_ssh_key
+
+      - name: Template Ansible inventory for air-gapped environment
+        uses: cuchi/jinja2-action@v1.2.2
+        if: env.VM_ENV == 'air-gapped' # -> TODO: remove condition when devel env is no longer needed
+        with:
+          template: ansible/templates/inventory.ini.j2
+          output_file: ansible/inventory.ini
+
+
+      - name: Template Ansible vars file
+        uses: cuchi/jinja2-action@v1.2.2
+        with:
+          template: ansible/templates/group_vars_all.yml.j2
+          output_file: ansible/group_vars/all.yml
+
+      - name: Install and configure Ansible
+        run: |
+          pip3 install ansible
+          ansible-playbook --version
+          chmod 600 ansible/ansible_ssh_key
+
+      - name: Configure VM with Ansible
+        run: |     
+          cd ansible
+          eval "$(ssh-agent -s)"
+          ssh-add ansible_ssh_key
+          ssh_command="ssh -o StrictHostKeyChecking=no azureadmin@${JUMPHOST_IP} 'ssh -o StrictHostKeyChecking=no azureadmin@${RUNNER_HOST_IP} whoami'"
+          [ "$VM_ENV" = "air-gapped" ] && eval $ssh_command
+          ansible-playbook configure-image-factory-vm.yml
+        # -> TODO: remove condition [ "$VM_ENV" = "air-gapped" ] when devel env is no longer needed
