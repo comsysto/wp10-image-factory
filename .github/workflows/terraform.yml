@@ -63,8 +63,8 @@ jobs:
           working-directory: ${{ github.event.inputs.directory }}
       - run: |
           python -m venv venv
-          ls -lah 
-          ls -lah venv
+          ls -lah venv/bin
+          source venv/bin/activate
           pip install -r requirements.txt
         working-directory: ${{ github.event.inputs.directory }}
 
