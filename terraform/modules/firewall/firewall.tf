@@ -71,6 +71,11 @@ resource "azurerm_route_table" "rt" {
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = azurerm_firewall.fw.ip_configuration[0].private_ip_address
   }
+  route {
+    name                   = "${var.prefix}-acrRoute"
+    address_prefix         = "10.0.2.0/24"
+    next_hop_type          = "VNetLocal"
+  }
 }
 
 resource "azurerm_subnet_route_table_association" "runner_subnet_rt_association" {
