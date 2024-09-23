@@ -75,20 +75,22 @@ jobs:
             echo "Image definition '$IMAGE_NAME' already exists."
           fi
 
-
       - name: Packer Init
-        run: packer init images/packer/user-packer
+        run: packer init --help
 
-      - name: Packer Build
-        run: |
-          packer build \
-            -var "client_id=${{ secrets.AZURE_CLIENT_ID }}" \
-            -var "client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" \
-            -var "tenant_id=${{ secrets.AZURE_TENANT_ID }}" \
-            -var "subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
-            -var "gallery_image_name=${{ env.IMAGE_NAME }}" \
-            -var "resource_group=${{ env.AZURE_RESOURCE_GROUP }}" \
-            -var "gallery_name=${{ env.AZURE_ACG }}" \
-            -var "gallery_image_version=${{ env.IMAGE_VERSION }}" \
-            -var "location=${{ env.AZURE_LOCATION }}" \
-            images/packer/user-packer
+      # - name: Packer Init
+      #   run: packer init images/packer/user-packer
+
+      # - name: Packer Build
+      #   run: |
+      #     packer build \
+      #       -var "client_id=${{ secrets.AZURE_CLIENT_ID }}" \
+      #       -var "client_secret=${{ secrets.AZURE_CLIENT_SECRET }}" \
+      #       -var "tenant_id=${{ secrets.AZURE_TENANT_ID }}" \
+      #       -var "subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}" \
+      #       -var "gallery_image_name=${{ env.IMAGE_NAME }}" \
+      #       -var "resource_group=${{ env.AZURE_RESOURCE_GROUP }}" \
+      #       -var "gallery_name=${{ env.AZURE_ACG }}" \
+      #       -var "gallery_image_version=${{ env.IMAGE_VERSION }}" \
+      #       -var "location=${{ env.AZURE_LOCATION }}" \
+      #       images/packer/user-packer
