@@ -21,6 +21,9 @@ Additionally, it provides reusable GitHub Actions workflows that users can invok
     - [Reusable Docker Image Workflow](#reusable-docker-image-workflow)
     - [Reusable Packer Image Workflow](#reusable-packer-image-workflow)
     - [Example User Repository](#example-user-repository)
+  - [GitHub Action Runners](#github-action-runners)
+    - [Multi-target architecture](#multi-target-architecture)
+    - [Quality gate and SBOM generation](#quality-gate-and-sbom-generation)
 
 ## Repository Structure
 
@@ -103,6 +106,8 @@ The platform deployment is managed through a `.github/workflows/terraform-deploy
 Detailed information about the Terraform configurations and scripts can be found in the following locations:
 - Terraform initialization scripts: [`terraform-init/`](./terraform-init/)
 - Main Terraform scripts: [`terraform/`](./terraform/)
+
+![Diagam](docs/wp10-diagram.drawio.png)
 
 ### Executing the Workflow
 
