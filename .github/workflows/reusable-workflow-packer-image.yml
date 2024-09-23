@@ -42,33 +42,58 @@ jobs:
         with:
           creds: ${{ env.AZURE_CREDENTIALS }}
 
+      # - name: Create Azure Image Definition
+      #   uses: azure/cli@v2
+      #   with:
+      #     azcliversion: ${{ env.AZ_CLI_VERSION }}
+      #     inlineScript: |
+      #       set +e
+      #       az sig image-definition show \
+      #         --resource-group "$AZURE_RESOURCE_GROUP" \
+      #         --gallery-name "$AZURE_ACG" \
+      #         --gallery-image-definition "$IMAGE_NAME" \
+      #         --query "name" -o tsv
+      #       az_exit_code=$?
+      #       set -e
+      #       if [ $az_exit_code -eq 3 ]; then
+      #         echo "Image definition does not exist. Creating it..."
+      #         az sig image-definition create \
+      #           --resource-group "$AZURE_RESOURCE_GROUP" \
+      #           --gallery-name "$AZURE_ACG" \
+      #           --gallery-image-definition "$IMAGE_NAME" \
+      #           --publisher "$IMAGE_PUBLISHER" \
+      #           --offer "$IMAGE_OFFER" \
+      #           --sku "$IMAGE_SKU" \
+      #           --os-type "$IMAGE_OS_TYPE"
+      #       else
+      #         echo "Image definition '$IMAGE_NAME' already exists."
+      #       fi
+
       - name: Create Azure Image Definition
-        uses: azure/cli@v2
-        with:
-          azcliversion: ${{ env.AZ_CLI_VERSION }}
-          inlineScript: |
-            set +e
-            az sig image-definition show \
+        run: |
+          set +e
+          az sig image-definition show \
+            --resource-group "$AZURE_RESOURCE_GROUP" \
+            --gallery-name "$AZURE_ACG" \
+            --gallery-image-definition "$IMAGE_NAME" \
+            --query "name" -o tsv
+          az_exit_code=$?
+          set -e
+          if [ $az_exit_code -eq 3 ]; then
+            echo "Image definition does not exist. Creating it..."
+            az sig image-definition create \
               --resource-group "$AZURE_RESOURCE_GROUP" \
               --gallery-name "$AZURE_ACG" \
               --gallery-image-definition "$IMAGE_NAME" \
-              --query "name" -o tsv
-            az_exit_code=$?
-            set -e
-            if [ $az_exit_code -eq 3 ]; then
-              echo "Image definition does not exist. Creating it..."
-              az sig image-definition create \
-                --resource-group "$AZURE_RESOURCE_GROUP" \
-                --gallery-name "$AZURE_ACG" \
-                --gallery-image-definition "$IMAGE_NAME" \
-                --publisher "$IMAGE_PUBLISHER" \
-                --offer "$IMAGE_OFFER" \
-                --sku "$IMAGE_SKU" \
-                --os-type "$IMAGE_OS_TYPE"
-            else
-              echo "Image definition '$IMAGE_NAME' already exists."
-            fi
-      
+              --publisher "$IMAGE_PUBLISHER" \
+              --offer "$IMAGE_OFFER" \
+              --sku "$IMAGE_SKU" \
+              --os-type "$IMAGE_OS_TYPE"
+          else
+            echo "Image definition '$IMAGE_NAME' already exists."
+          fi
+
+
       - name: Packer Init
         run: packer init images/packer/user-packer
 
