@@ -76,12 +76,14 @@ jobs:
           fi
 
       - name: Packer Init
-        run: |
-          packer --version
-          ls -lha images/packer/user-packer
+        run: packer init images/packer/user-packer
 
-      # - name: Packer Init
-      #   run: packer init images/packer/user-packer
+      - name: Print dir
+        run: |
+          ls -lha 
+          pwd
+
+
 
       # - name: Packer Build
       #   run: |
