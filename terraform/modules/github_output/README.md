@@ -30,16 +30,16 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_jumphost_ip"></a> [jumphost\_ip](#input\_jumphost\_ip) | Public IP address of the jumphost VM. | `string` | n/a | yes |
-| <a name="input_repository"></a> [repository](#input\_repository) | Repository in which to save output secrets. | `string` | `"wp10-image-factory"` | no |
-| <a name="input_runner_host_ip"></a> [runner\_host\_ip](#input\_runner\_host\_ip) | Private IP address of the runner host VM. | `string` | n/a | yes |
-| <a name="input_ssh_key"></a> [ssh\_key](#input\_ssh\_key) | Private SSH key created during VM deployment. | `string` | n/a | yes |
+| <a name="input_jumphost_ip"></a> [jumphost\_ip](#input\_jumphost\_ip) | Public IP address of the jumphost VM | `string` | n/a | yes |
+| <a name="input_repository"></a> [repository](#input\_repository) | Repository in which to save output secrets | `string` | `"wp10-image-factory"` | no |
+| <a name="input_runner_host_ip"></a> [runner\_host\_ip](#input\_runner\_host\_ip) | Private IP address of the runner host VM | `string` | n/a | yes |
+| <a name="input_ssh_key"></a> [ssh\_key](#input\_ssh\_key) | Private SSH key created during VM deployment | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_jumphost_ip_encrypted"></a> [jumphost\_ip\_encrypted](#output\_jumphost\_ip\_encrypted) | n/a |
-| <a name="output_private_key_encrypted"></a> [private\_key\_encrypted](#output\_private\_key\_encrypted) | n/a |
-| <a name="output_runner_host_ip_encrypted"></a> [runner\_host\_ip\_encrypted](#output\_runner\_host\_ip\_encrypted) | n/a |
+| <a name="output_jumphost_ip_encrypted"></a> [jumphost\_ip\_encrypted](#output\_jumphost\_ip\_encrypted) | Encrypted Jumphost IP. For development purposes |
+| <a name="output_private_key_encrypted"></a> [private\_key\_encrypted](#output\_private\_key\_encrypted) | Encrypted VM private key. For development purposes |
+| <a name="output_runner_host_ip_encrypted"></a> [runner\_host\_ip\_encrypted](#output\_runner\_host\_ip\_encrypted) | Encrypted Runner host IP. For development purposes |
 <!-- END_TF_DOCS -->

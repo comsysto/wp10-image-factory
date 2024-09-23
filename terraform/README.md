@@ -33,12 +33,12 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_env_tag"></a> [env\_tag](#input\_env\_tag) | Environment tag applied to all created resources. | `string` | n/a | yes |
-| <a name="input_local_development"></a> [local\_development](#input\_local\_development) | Development purposes only: set to 'true' when running terraform apply locally. Outputs SSH private key to the terraform directory. | `bool` | `false` | no |
-| <a name="input_project_tag"></a> [project\_tag](#input\_project\_tag) | Project tag applied to all created resources. | `string` | n/a | yes |
-| <a name="input_repository"></a> [repository](#input\_repository) | Repository in which to save output secrets. | `string` | `"wp10-image-factory"` | no |
-| <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | Location of the resource group. | `string` | `"westeurope"` | no |
-| <a name="input_runner_image_id"></a> [runner\_image\_id](#input\_runner\_image\_id) | Shared Image Gallery ID of the runner VM image. | `string` | `"/subscriptions/218f1214-da01-4678-8025-4e14a989e315/resourceGroups/wp10-tf-dev-rg/providers/Microsoft.Compute/galleries/wp10ImageFactoryGallery/images/image-factory-vm/versions/1.0.34"` | no |
+| <a name="input_env_tag"></a> [env\_tag](#input\_env\_tag) | Environment tag applied to all created resources | `string` | `"dev"` | no |
+| <a name="input_local_development"></a> [local\_development](#input\_local\_development) | Development purposes only: set to 'true' when running terraform apply locally. Outputs SSH private key to the terraform directory | `bool` | `false` | no |
+| <a name="input_project_tag"></a> [project\_tag](#input\_project\_tag) | Project tag applied to all created resources | `string` | `"wp10"` | no |
+| <a name="input_repository"></a> [repository](#input\_repository) | Repository in which to save output secrets | `string` | `"wp10-image-factory"` | no |
+| <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | Location of the resource group | `string` | `"westeurope"` | no |
+| <a name="input_runner_image_id"></a> [runner\_image\_id](#input\_runner\_image\_id) | Shared Image Gallery ID of the runner VM image | `string` | `"/subscriptions/218f1214-da01-4678-8025-4e14a989e315/resourceGroups/wp10-tf-dev-rg/providers/Microsoft.Compute/galleries/wp10ImageFactoryGallery/images/image-factory-vm/versions/1.0.34"` | no |
 
 ## Outputs
 

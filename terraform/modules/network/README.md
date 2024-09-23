@@ -29,17 +29,17 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_env_tag"></a> [env\_tag](#input\_env\_tag) | Environment tag applied to all created resources. | `string` | `"dev"` | no |
+| <a name="input_env_tag"></a> [env\_tag](#input\_env\_tag) | Environment tag applied to all created resources | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | Prefix of the resource name | `string` | n/a | yes |
-| <a name="input_project_tag"></a> [project\_tag](#input\_project\_tag) | Project tag applied to all created resources. | `string` | `"wp10"` | no |
-| <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | Location of the resource group. | `string` | n/a | yes |
+| <a name="input_project_tag"></a> [project\_tag](#input\_project\_tag) | Project tag applied to all created resources | `string` | n/a | yes |
+| <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | Location of the resource group | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_azurerm_virtual_network"></a> [azurerm\_virtual\_network](#output\_azurerm\_virtual\_network) | n/a |
-| <a name="output_private_subnet"></a> [private\_subnet](#output\_private\_subnet) | n/a |
-| <a name="output_public_subnet"></a> [public\_subnet](#output\_public\_subnet) | n/a |
-| <a name="output_resource_group"></a> [resource\_group](#output\_resource\_group) | n/a |
+| <a name="output_azurerm_virtual_network"></a> [azurerm\_virtual\_network](#output\_azurerm\_virtual\_network) | Virtual network output |
+| <a name="output_private_subnet"></a> [private\_subnet](#output\_private\_subnet) | Private subnet output |
+| <a name="output_public_subnet"></a> [public\_subnet](#output\_public\_subnet) | Public subnet output |
+| <a name="output_resource_group"></a> [resource\_group](#output\_resource\_group) | Resource group output |
 <!-- END_TF_DOCS -->

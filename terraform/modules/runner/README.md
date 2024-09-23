@@ -41,24 +41,24 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_env_tag"></a> [env\_tag](#input\_env\_tag) | Environment tag applied to all created resources | `string` | `"dev"` | no |
+| <a name="input_env_tag"></a> [env\_tag](#input\_env\_tag) | Environment tag applied to all created resources | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | Prefix of the resource name | `string` | n/a | yes |
-| <a name="input_private_subnet_id"></a> [private\_subnet\_id](#input\_private\_subnet\_id) | Id of the subnet. | `string` | n/a | yes |
-| <a name="input_project_tag"></a> [project\_tag](#input\_project\_tag) | Project tag applied to all created resources | `string` | `"wp10"` | no |
-| <a name="input_public_subnet_id"></a> [public\_subnet\_id](#input\_public\_subnet\_id) | Id of the subnet. | `string` | n/a | yes |
-| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | Id of the resource group. | `string` | n/a | yes |
-| <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | Location of the resource group. | `string` | n/a | yes |
-| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the resource group. | `string` | n/a | yes |
-| <a name="input_runner_image_id"></a> [runner\_image\_id](#input\_runner\_image\_id) | Shared Image Gallery ID of the runner VM image. | `string` | n/a | yes |
-| <a name="input_ssh_key_name"></a> [ssh\_key\_name](#input\_ssh\_key\_name) | Name of the generated SSH key for the VM. | `string` | `"runnersshkey"` | no |
-| <a name="input_username"></a> [username](#input\_username) | The username for the local account that will be created on the new VM. | `string` | `"azureadmin"` | no |
+| <a name="input_private_subnet_id"></a> [private\_subnet\_id](#input\_private\_subnet\_id) | Id of the private subnet | `string` | n/a | yes |
+| <a name="input_project_tag"></a> [project\_tag](#input\_project\_tag) | Project tag applied to all created resources | `string` | n/a | yes |
+| <a name="input_public_subnet_id"></a> [public\_subnet\_id](#input\_public\_subnet\_id) | Id of the public subnet | `string` | n/a | yes |
+| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | Id of the resource group | `string` | n/a | yes |
+| <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | Location of the resource group | `string` | n/a | yes |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the resource group | `string` | n/a | yes |
+| <a name="input_runner_image_id"></a> [runner\_image\_id](#input\_runner\_image\_id) | Shared Image Gallery ID of the runner VM image | `string` | n/a | yes |
+| <a name="input_ssh_key_name"></a> [ssh\_key\_name](#input\_ssh\_key\_name) | File name of the generated SSH key for the VM. Development purposes only | `string` | `"runnersshkey"` | no |
+| <a name="input_username"></a> [username](#input\_username) | The username for the default admin account that will be created on the new VM | `string` | `"azureadmin"` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_key_data"></a> [key\_data](#output\_key\_data) | n/a |
-| <a name="output_private_ip_address"></a> [private\_ip\_address](#output\_private\_ip\_address) | n/a |
-| <a name="output_private_key"></a> [private\_key](#output\_private\_key) | n/a |
-| <a name="output_public_ip_address"></a> [public\_ip\_address](#output\_public\_ip\_address) | n/a |
+| <a name="output_key_data"></a> [key\_data](#output\_key\_data) | Public key of the generated SSH key |
+| <a name="output_private_ip_address"></a> [private\_ip\_address](#output\_private\_ip\_address) | Private IP address of the Runner host |
+| <a name="output_private_key"></a> [private\_key](#output\_private\_key) | (Sensitive) Generated private SSH key |
+| <a name="output_public_ip_address"></a> [public\_ip\_address](#output\_public\_ip\_address) | Public IP address of the jumphost |
 <!-- END_TF_DOCS -->

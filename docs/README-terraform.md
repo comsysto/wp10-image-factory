@@ -1,10 +1,3 @@
-# wp10-image-factory
-Frame Contract WP10 Image Factory
-
-# Contents
-- `terraform-init` - terraform code for setting up an Azure Storage Account that can be used for saving the terraform state
-- `terraform` - terraform modules for deploying the resource group, virtual network, subnet, VM
-
 # Requirements
 - Access to Azure Resource Manager
 - `terraform >=1.0.0`, tested with `1.9.5`

@@ -25,10 +25,10 @@ variable "virtual_network" {
 
 variable "env_tag" {
   type        = string
-  description = "Environment tag applied to all created resources."
+  description = "Environment tag applied to all created resources"
 }
 
 variable "project_tag" {
   type        = string
-  description = "Project tag applied to all created resources."
+  description = "Project tag applied to all created resources"
 }
