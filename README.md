@@ -137,4 +137,32 @@ The [`reusable-workflow-packer-image.yml`](./.github/workflows/reusable-workflow
 
 ### Example User Repository
 
-An example user repository that demonstrates how to call these reusable workflows can be found [here](https://github.com/comsysto/wp10-image-factory-user).
+An example user repository that demonstrates how to call these reusable workflows can be found [here](https://github.com/comsysto/wp10-image-factory-user-1).
+
+## GitHub Action Runners
+
+### Multi-target architecture
+
+Our infrastructure now supports the production of both arm64 and amd64 container images. This enhancement has been achieved by enabling multi-architecture support on our Image Factory GitHub Actions runners.
+
+The following commands were executed to facilitate this capability:
+
+```bash
+sudo update-binfmts --enable qemu-aarch64
+sudo update-binfmts --enable qemu-arm
+```
+
+By enabling these QEMU interpreters, our CI/CD pipeline can seamlessly handle and build container images for multiple architectures, empowering customers with greater flexibility and compatibility for their deployment needs.
+
+### Quality gate and SBOM generation
+
+Quality Gate Checking with Trivy helps us enforce quality gates automatically. This integration reduces the risk of deploying insecure or non-compliant images to production, maintaining high security.
+
+SBOM Generation with Trivy provides detailed visibility into the components, libraries, and dependencies within our Docker images. This transparency allows us to manage software components effectively, quickly identify and mitigate vulnerabilities, and ensure compliance with licensing and regulatory requirements.
+
+SBOM is generated in following formats:
+
+- CycloneDX
+- SPDX
+
+Each invocation of our reusable workflow generates and uploads the results to the GitHub Actions run. The output is consolidated into a file named image-scan-results.zip.
