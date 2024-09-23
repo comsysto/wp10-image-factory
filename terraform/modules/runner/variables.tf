@@ -36,7 +36,7 @@ variable "username" {
 
 variable "ssh_key_name" {
   type        = string
-  description = "File name of the generated SSH key for the VM. Development purposes only"
+  description = "Name of the generated SSH key for the VM"
   default     = "runnersshkey"
 }
 

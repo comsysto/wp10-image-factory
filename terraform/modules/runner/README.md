@@ -50,7 +50,7 @@ No modules.
 | <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | Location of the resource group | `string` | n/a | yes |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of the resource group | `string` | n/a | yes |
 | <a name="input_runner_image_id"></a> [runner\_image\_id](#input\_runner\_image\_id) | Shared Image Gallery ID of the runner VM image | `string` | n/a | yes |
-| <a name="input_ssh_key_name"></a> [ssh\_key\_name](#input\_ssh\_key\_name) | File name of the generated SSH key for the VM. Development purposes only | `string` | `"runnersshkey"` | no |
+| <a name="input_ssh_key_name"></a> [ssh\_key\_name](#input\_ssh\_key\_name) | Name of the generated SSH key for the VM | `string` | `"runnersshkey"` | no |
 | <a name="input_username"></a> [username](#input\_username) | The username for the default admin account that will be created on the new VM | `string` | `"azureadmin"` | no |
 
 ## Outputs
