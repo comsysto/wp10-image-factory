@@ -33,16 +33,6 @@ RUN apt-get update -y && \
     wget && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# # Create runner user
-# RUN mkdir -p ${USER_HOME} && \
-#     useradd -r -d ${USER_HOME} -s /sbin/nologin -c "GitHub Actions User" ${USER_NAME}
-
-# # Add podman configuration file(s) and permissions
-# ADD files/containers.conf ${USER_HOME}/.config/containers/containers.conf
-# ADD files/registries.conf ${USER_HOME}/.config/containers/registries.conf
-# RUN mkdir -p ${USER_HOME}/.local/share/containers && \
-#     chown -R ${USER_GROUP}:${USER_NAME} ${USER_HOME}
-
 # Create runner user and necessary directories
 RUN groupadd -r ${USER_GROUP} && \
     useradd -r -d ${USER_HOME} -s /sbin/nologin -g ${USER_GROUP} -c "GitHub Actions User" ${USER_NAME} && \
