@@ -4,7 +4,7 @@ build {
   ]
 
   provisioner "file" {
-    source      = "images/packer/image-factory-vm/scripts/setup-vm.sh"
+    source      = "images/packer/user-packer/scripts/setup-vm.sh"
     destination = "/tmp/setup.sh"
   }
 
