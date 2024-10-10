@@ -40,6 +40,8 @@ on:
         - runner
         - network
         - acg
+        - firewall
+        - github_output
         default: ''
 
 
@@ -67,7 +69,7 @@ jobs:
           ls -lah venv/bin
           source venv/bin/activate
           pip install -r requirements.txt
-        working-directory: ${{ github.event.inputs.directory }}
+        working-directory: terraform
 
       - name: 'Terraform Init'
         if: github.event.inputs.directory != ''
@@ -89,7 +91,10 @@ jobs:
             export STORAGE_ACCOUNT_NAME=$(extract_value "storage_account_name" config.azurerm.tfbackend)
             export ARM_ACCESS_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv)
             terraform init --backend-config=config.azurerm.tfbackend
+          else
+            terraform init
           fi
+
 
           terraform workspace list
           terraform workspace select --or-create ${{github.event.inputs.workspace}}
@@ -140,4 +145,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
           GITHUB_OWNER: ${{ vars.GH_OWNER }}
         run: |
-          terraform destroy -target=module.${{ github.event.inputs.module }} -auto-approve
+          terraform destroy -auto-approve
