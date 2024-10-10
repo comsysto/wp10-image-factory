@@ -1,7 +1,7 @@
 # Terraform documentation
 
 This repository contains terraform code that deploys following platform on Azure:
-![Diagam](wp10-diagram.drawio.png)
+![Diagam](./wp10-diagram.drawio.png)
 
 ## Requirements
 

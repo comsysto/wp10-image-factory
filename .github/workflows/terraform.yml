@@ -40,6 +40,8 @@ on:
         - runner
         - network
         - acg
+        - firewall
+        - github_output
         default: ''
 
 
@@ -67,7 +69,7 @@ jobs:
           ls -lah venv/bin
           source venv/bin/activate
           pip install -r requirements.txt
-        working-directory: ${{ github.event.inputs.directory }}
+        working-directory: terraform
 
       - name: 'Terraform Init'
         if: github.event.inputs.directory != ''
@@ -140,4 +142,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
           GITHUB_OWNER: ${{ vars.GH_OWNER }}
         run: |
-          terraform destroy -target=module.${{ github.event.inputs.module }} -auto-approve
+          terraform destroy -auto-approve
