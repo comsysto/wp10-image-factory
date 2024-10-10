@@ -91,7 +91,10 @@ jobs:
             export STORAGE_ACCOUNT_NAME=$(extract_value "storage_account_name" config.azurerm.tfbackend)
             export ARM_ACCESS_KEY=$(az storage account keys list --resource-group $RESOURCE_GROUP_NAME --account-name $STORAGE_ACCOUNT_NAME --query '[0].value' -o tsv)
             terraform init --backend-config=config.azurerm.tfbackend
+          else
+            terraform init
           fi
+
 
           terraform workspace list
           terraform workspace select --or-create ${{github.event.inputs.workspace}}
